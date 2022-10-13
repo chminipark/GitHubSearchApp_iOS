@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		BD0A632A28F7DFE400C080A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A632928F7DFE400C080A5 /* AppDelegate.swift */; };
 		BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A632B28F7DFE400C080A5 /* SceneDelegate.swift */; };
-		BD0A632E28F7DFE400C080A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A632D28F7DFE400C080A5 /* ViewController.swift */; };
 		BD0A633328F7DFE600C080A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD0A633228F7DFE600C080A5 /* Assets.xcassets */; };
 		BD0A633628F7DFE600C080A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD0A633428F7DFE600C080A5 /* LaunchScreen.storyboard */; };
 		BD0A633E28F7E25E00C080A5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A633D28F7E25E00C080A5 /* TabBarController.swift */; };
@@ -21,7 +20,6 @@
 		BD0A632628F7DFE400C080A5 /* GitHubSearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubSearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0A632928F7DFE400C080A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD0A632B28F7DFE400C080A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BD0A632D28F7DFE400C080A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		BD0A633228F7DFE600C080A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD0A633528F7DFE600C080A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD0A633728F7DFE600C080A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,17 +58,48 @@
 		BD0A632828F7DFE400C080A5 /* GitHubSearchApp */ = {
 			isa = PBXGroup;
 			children = (
+				BD0A634628F7EF4800C080A5 /* Application */,
+				BD0A634328F7EEDA00C080A5 /* Presentation */,
+			);
+			path = GitHubSearchApp;
+			sourceTree = "<group>";
+		};
+		BD0A634328F7EEDA00C080A5 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				BD0A633D28F7E25E00C080A5 /* TabBarController.swift */,
+				BD0A634428F7EEE400C080A5 /* SearchRepo */,
+				BD0A634528F7EEF000C080A5 /* FavoriteRepo */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		BD0A634428F7EEE400C080A5 /* SearchRepo */ = {
+			isa = PBXGroup;
+			children = (
+				BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */,
+			);
+			path = SearchRepo;
+			sourceTree = "<group>";
+		};
+		BD0A634528F7EEF000C080A5 /* FavoriteRepo */ = {
+			isa = PBXGroup;
+			children = (
+				BD0A634128F7E32700C080A5 /* FavoriteRepoViewController.swift */,
+			);
+			path = FavoriteRepo;
+			sourceTree = "<group>";
+		};
+		BD0A634628F7EF4800C080A5 /* Application */ = {
+			isa = PBXGroup;
+			children = (
 				BD0A632928F7DFE400C080A5 /* AppDelegate.swift */,
 				BD0A632B28F7DFE400C080A5 /* SceneDelegate.swift */,
-				BD0A632D28F7DFE400C080A5 /* ViewController.swift */,
 				BD0A633228F7DFE600C080A5 /* Assets.xcassets */,
 				BD0A633428F7DFE600C080A5 /* LaunchScreen.storyboard */,
 				BD0A633728F7DFE600C080A5 /* Info.plist */,
-				BD0A633D28F7E25E00C080A5 /* TabBarController.swift */,
-				BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */,
-				BD0A634128F7E32700C080A5 /* FavoriteRepoViewController.swift */,
 			);
-			path = GitHubSearchApp;
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,7 +173,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD0A634228F7E32700C080A5 /* FavoriteRepoViewController.swift in Sources */,
-				BD0A632E28F7DFE400C080A5 /* ViewController.swift in Sources */,
 				BD0A633E28F7E25E00C080A5 /* TabBarController.swift in Sources */,
 				BD0A632A28F7DFE400C080A5 /* AppDelegate.swift in Sources */,
 				BD0A634028F7E2D500C080A5 /* SearchRepoViewController.swift in Sources */,
