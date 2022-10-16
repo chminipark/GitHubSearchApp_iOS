@@ -11,8 +11,15 @@ enum MockData {
     static let numberList = (1...20).map { $0 }
 }
 
-class SearchRepoViewController: UIViewController {
-    let tableView: UITableView = {
+final class SearchRepoViewController: UIViewController {
+    private let searchBar: UISearchController = {
+        let sb = UISearchController()
+        sb.searchBar.placeholder = "Enter the GitHub Repository"
+        sb.searchBar.searchBarStyle = .minimal
+        return sb
+    }()
+    
+    private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
@@ -23,10 +30,11 @@ class SearchRepoViewController: UIViewController {
         self.view.backgroundColor = .white
         
         configureUI()
+        setupSearchBar()
         setupTableView()
     }
     
-    func configureUI() {
+    private func configureUI() {
         self.view.addSubview(self.tableView)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -38,8 +46,22 @@ class SearchRepoViewController: UIViewController {
         ])
     }
     
-    func setupTableView() {
+    private func setupTableView() {
         self.tableView.dataSource = self
+    }
+    
+    private func setupSearchBar() {
+        navigationItem.searchController = searchBar
+        searchBar.searchBar.delegate = self
+    }
+}
+
+extension SearchRepoViewController: UISearchBarDelegate {
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else {
+            return
+        }
+        print(text)
     }
 }
 
@@ -57,4 +79,5 @@ extension SearchRepoViewController: UITableViewDataSource {
         return cell
     }
 }
+
 

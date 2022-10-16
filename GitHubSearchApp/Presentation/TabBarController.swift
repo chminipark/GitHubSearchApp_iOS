@@ -11,7 +11,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let searchRepoViewController = SearchRepoViewController()
+        let searchRepoViewController = UINavigationController(rootViewController: SearchRepoViewController())
         searchRepoViewController.tabBarItem = UITabBarItem(title: "Repo",
                                                            image: UIImage(systemName: "doc.text"),
                                                            selectedImage: UIImage(systemName: "doc.text.fill"))
