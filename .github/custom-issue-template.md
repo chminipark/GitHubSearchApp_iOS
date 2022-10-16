@@ -7,7 +7,7 @@ assignees: chminipark
 
 ---
 
-## issue
+## Issue
 - 이슈내용
 
 ## To-do
