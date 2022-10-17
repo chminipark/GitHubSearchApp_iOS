@@ -12,8 +12,10 @@ enum NetworkError: Error {
     case queryEncodingError
     case makeURLError
     case responseError(Error)
-    case unknownError(Error)
+    case unknownError
     case statusCodeError(Int)
+    case noDataError
+    case decodingError
     
     var description: String {
         let base = "😡😡😡😡😡"
@@ -26,10 +28,14 @@ enum NetworkError: Error {
             return base + "makeURLError"
         case .responseError(let error):
             return base + "responseError : \(error.localizedDescription)"
-        case .unknownError(let error):
-            return base + "unknownError : \(error.localizedDescription)"
+        case .unknownError:
+            return base + "unknownError"
         case .statusCodeError(let code):
             return base + "statusCodeError : \(code)"
+        case .noDataError:
+            return base + "noDataError"
+        case .decodingError:
+            return base + "decodingError"
         }
     }
 }
