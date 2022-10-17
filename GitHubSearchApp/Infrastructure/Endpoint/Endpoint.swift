@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct Endpoint: Requestable {
+struct Endpoint<R>: Requestable, Responsable {
+    typealias Response = R
+    
     var baseURL: String
     var path: String
     var queryParameter: QueryParameter

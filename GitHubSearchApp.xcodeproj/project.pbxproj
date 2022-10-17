@@ -18,6 +18,8 @@
 		BDC09EBE28FCDA950024507F /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EBD28FCDA940024507F /* Endpoint.swift */; };
 		BDC09EC028FD20AD0024507F /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EBF28FD20AD0024507F /* Requestable.swift */; };
 		BDC09EC228FD228C0024507F /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EC128FD228C0024507F /* NetworkError.swift */; };
+		BDC09EC628FD273B0024507F /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EC528FD273B0024507F /* Provider.swift */; };
+		BDC09EC828FD280C0024507F /* Responsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EC728FD280C0024507F /* Responsable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		BDC09EBD28FCDA940024507F /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BDC09EBF28FD20AD0024507F /* Requestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
 		BDC09EC128FD228C0024507F /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		BDC09EC528FD273B0024507F /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
+		BDC09EC728FD280C0024507F /* Responsable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Responsable.swift; sourceTree = "<group>"; };
 		D149E3DFEA423C5712D09690 /* Pods-GitHubSearchApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearchApp.release.xcconfig"; path = "Target Support Files/Pods-GitHubSearchApp/Pods-GitHubSearchApp.release.xcconfig"; sourceTree = "<group>"; };
 		EF9E9F8BE832653055E16D39 /* Pods-GitHubSearchApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearchApp.debug.xcconfig"; path = "Target Support Files/Pods-GitHubSearchApp/Pods-GitHubSearchApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,6 +130,7 @@
 		BDC09EBB28FCDA790024507F /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				BDC09EC428FD27340024507F /* Provider */,
 				BDC09EBC28FCDA890024507F /* Endpoint */,
 			);
 			path = Infrastructure;
@@ -136,6 +141,7 @@
 			children = (
 				BDC09EBD28FCDA940024507F /* Endpoint.swift */,
 				BDC09EBF28FD20AD0024507F /* Requestable.swift */,
+				BDC09EC728FD280C0024507F /* Responsable.swift */,
 				BDC09EC128FD228C0024507F /* NetworkError.swift */,
 			);
 			path = Endpoint;
@@ -149,6 +155,14 @@
 				BD0A633728F7DFE600C080A5 /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		BDC09EC428FD27340024507F /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				BDC09EC528FD273B0024507F /* Provider.swift */,
+			);
+			path = Provider;
 			sourceTree = "<group>";
 		};
 		DE27F3B76C10F7AD0449DD60 /* Frameworks */ = {
@@ -277,9 +291,11 @@
 				BDC09EC228FD228C0024507F /* NetworkError.swift in Sources */,
 				BDC09EC028FD20AD0024507F /* Requestable.swift in Sources */,
 				BD0A633E28F7E25E00C080A5 /* TabBarController.swift in Sources */,
+				BDC09EC628FD273B0024507F /* Provider.swift in Sources */,
 				BD0A632A28F7DFE400C080A5 /* AppDelegate.swift in Sources */,
 				BDC09EBE28FCDA950024507F /* Endpoint.swift in Sources */,
 				BD0A634028F7E2D500C080A5 /* SearchRepoViewController.swift in Sources */,
+				BDC09EC828FD280C0024507F /* Responsable.swift in Sources */,
 				BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
