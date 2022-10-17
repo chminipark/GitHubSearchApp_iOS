@@ -17,6 +17,16 @@ struct SearchRepoResponseDTO: Decodable {
     }
 }
 
+extension SearchRepoResponseDTO {
+    func toDomain() -> [Repository] {
+        var repoList = [Repository]()
+        self.repositories.forEach { data in
+            repoList.append(Repository(name: data.repository.name))
+        }
+        return repoList
+    }
+}
+
 struct RepoInfoDTO: Decodable {
     let repository: RepositoryDTO
 }
