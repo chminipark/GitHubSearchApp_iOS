@@ -10,7 +10,7 @@ import Foundation
 protocol Requestable {
     var baseURL: String { get }
     var path: String { get }
-    var queryParameter: QueryParameter { get }
+    var queryParameter: Encodable { get }
 }
 
 extension Requestable {
@@ -40,12 +40,6 @@ extension Requestable {
         
         return URLRequest(url: url)
     }
-}
-
-struct QueryParameter: Encodable {
-    let q: String
-    let per_page: Int
-    let page: Int
 }
 
 extension Encodable {

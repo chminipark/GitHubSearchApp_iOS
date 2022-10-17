@@ -10,11 +10,42 @@ import XCTest
 import RxSwift
 import RxCocoa
 
+struct APIEndpoints {
+    static func getSearchRepoEndpoint(with searchRepoRequestDTO: SearchRepoRequestDTO) -> Endpoint<SearchRepoResponseDTO> {
+        
+        return Endpoint(baseURL: "https://api.github.com/",
+                        path: "/search/repositories",
+                        queryParameter: searchRepoRequestDTO)
+    }
+}
+
 protocol URLSessionable {
     func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
 }
 
 extension URLSession: URLSessionable {}
+
+class MockURLSessionDataTask: URLSessionDataTask {
+    var resumeDidCall: (() -> ())?
+    
+    override func resume() {
+        resumeDidCall?()
+    }
+}
+
+//class MockURLSession: URLSessionable {
+//
+//    var isFail: Bool
+//
+//    init(isFail: Bool) {
+//        self.isFail = isFail
+//    }
+//
+//    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+//        let successResult
+//    }
+//}
+
 
 protocol Provider {
     func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Single<R> where E.Response == R

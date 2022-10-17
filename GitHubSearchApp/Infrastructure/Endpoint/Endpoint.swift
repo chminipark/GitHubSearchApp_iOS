@@ -14,11 +14,11 @@ struct Endpoint<R>: RequestResponsable {
     
     var baseURL: String
     var path: String
-    var queryParameter: QueryParameter
+    var queryParameter: Encodable
     
     init(baseURL: String,
          path: String,
-         queryParameter: QueryParameter) {
+         queryParameter: Encodable) {
         self.baseURL = baseURL
         self.path = path
         self.queryParameter = queryParameter
