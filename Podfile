@@ -11,3 +11,14 @@ target 'GitHubSearchApp' do
   pod 'RxCocoa', '6.5.0'
 
 end
+
+target 'GitHubSearchAppTests' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for GitHubSearchApp
+
+  pod 'RxSwift', '6.5.0'
+  pod 'RxCocoa', '6.5.0'
+
+end

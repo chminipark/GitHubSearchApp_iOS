@@ -8,6 +8,13 @@
 import XCTest
 @testable import GitHubSearchApp
 import RxSwift
+import RxCocoa
+
+protocol URLSessionable {
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
+}
+
+extension URLSession: URLSessionable {}
 
 protocol Provider {
     func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Single<R> where E.Response == R
@@ -17,6 +24,7 @@ class ProviderImpl: Provider {
     let session = URLSession.shared
 
     func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Single<R> where E.Response == R {
+        
         return Single.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
