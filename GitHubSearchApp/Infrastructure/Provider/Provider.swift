@@ -12,8 +12,18 @@ protocol Provider {
     func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Single<R> where E.Response == R
 }
 
+protocol URLSessionable {
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
+}
+
+extension URLSession: URLSessionable {}
+
 class ProviderImpl: Provider {
-    let session = URLSession.shared
+    let session: URLSessionable
+    
+    init(session: URLSessionable) {
+        self.session = session
+    }
 
     func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Single<R> where E.Response == R {
         
