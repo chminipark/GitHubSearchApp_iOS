@@ -6,40 +6,49 @@
 //
 
 import XCTest
-@testable import GitHubSearchApp
 import RxSwift
-import RxCocoa
-
-protocol URLSessionable {
-    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
-}
-
-extension URLSession: URLSessionable {}
-
-class MockURLSessionDataTask: URLSessionDataTask {
-    var resumeDidCall: (() -> ())?
-    
-    override func resume() {
-        resumeDidCall?()
-    }
-}
-
-//class MockURLSession: URLSessionable {
-//
-//    var isFail: Bool
-//
-//    init(isFail: Bool) {
-//        self.isFail = isFail
-//    }
-//
-//    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-//
-//    }
-//}
-
-
+import RxBlocking
+@testable import GitHubSearchApp
 
 class GitHubSearchAppTests: XCTestCase {
-    
+    var sut: Provider!
+    var disposeBag: DisposeBag!
 
+    override func setUpWithError() throws {
+        self.sut = ProviderImpl(session: MockURLSession(isFail: false))
+        self.disposeBag = DisposeBag()
+    }
+
+    func test_ProviderRequestWithSearchRepo_Success() {
+        // given
+        let endpoint = APIEndpoints.searchRepo(with: SearchRepoRequestDTO(q: ""))
+        let observable = sut.request(endpoint: endpoint)
+
+        // when
+        let data = try! observable.toBlocking().first()
+
+        // then
+        XCTAssertEqual(data?.totalCount, 40)
+    }
+    
+    func test_ProviderRequestWithSearchRepo_Fail() {
+        // given
+        self.sut = ProviderImpl(session: MockURLSession(isFail: true))
+        let endpoint = APIEndpoints.searchRepo(with: SearchRepoRequestDTO(q: ""))
+        let observable = sut.request(endpoint: endpoint)
+        let expectation = XCTestExpectation()
+
+        // when, then
+        observable.subscribe(onSuccess: { data in
+            XCTFail("it's fail Test, should be Fail")
+        }, onFailure: { error in
+            if let error = error as? NetworkError {
+                XCTAssertEqual(error.description, "😡😡😡😡😡" + "statusCodeError : 500")
+                expectation.fulfill()
+            }
+        })
+        .disposed(by: disposeBag)
+        
+        wait(for: [expectation], timeout: 5)
+    }
 }

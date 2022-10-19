@@ -7,11 +7,9 @@
 
 import UIKit
 
-enum MockData {
-    static let numberList = (1...20).map { $0 }
-}
-
 final class SearchRepoViewController: UIViewController {
+    let numberList = (1...20).map { $0 }
+    
     private let searchBar: UISearchController = {
         let sb = UISearchController()
         sb.searchBar.placeholder = "Enter the GitHub Repository"
@@ -67,12 +65,12 @@ extension SearchRepoViewController: UISearchBarDelegate {
 
 extension SearchRepoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return MockData.numberList.count
+        return numberList.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = "\(MockData.numberList[indexPath.row])"
+        content.text = "\(numberList[indexPath.row])"
         cell.contentConfiguration = content
         
         cell.separatorInset = .zero
