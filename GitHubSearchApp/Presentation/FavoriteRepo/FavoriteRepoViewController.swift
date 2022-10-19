@@ -8,6 +8,8 @@
 import UIKit
 
 class FavoriteRepoViewController: UIViewController {
+    let numberList = (1...20).map { $0 }
+    
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -41,12 +43,12 @@ class FavoriteRepoViewController: UIViewController {
 
 extension FavoriteRepoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return MockData.numberList.count
+        return numberList.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = "\(MockData.numberList[indexPath.row])"
+        content.text = "\(numberList[indexPath.row])"
         cell.contentConfiguration = content
         
         cell.separatorInset = .zero

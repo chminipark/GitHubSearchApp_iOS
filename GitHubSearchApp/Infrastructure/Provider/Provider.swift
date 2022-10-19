@@ -49,7 +49,7 @@ class ProviderImpl: Provider {
                             emitter(.failure(error))
                         }
                     }
-                }
+                }.resume()
             } catch {
                 emitter(.failure(error))
             }

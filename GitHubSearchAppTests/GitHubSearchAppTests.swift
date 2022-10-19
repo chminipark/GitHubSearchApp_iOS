@@ -64,18 +64,13 @@ class GitHubSearchAppTests: XCTestCase {
     
     func test_requestSuccess() {
         // given
-//        let expectation = XCTestExpectation()
         let endpoint = APIEndpoints.searchRepo(with: SearchRepoRequestDTO(q: ""))
+        let observable = sut.request(endpoint: endpoint)
                 
         // when
-        sut.request(endpoint: endpoint)
-            .subscribe(onSuccess: { data in
-                XCTAssertEqual(40, data.totalCount, "efefe")
-//                expectation.fulfill()
-            }, onFailure: { error in
-                XCTFail(error.localizedDescription)
-            })
-            .disposed(by: disposeBag)
-//        wait(for: [expectation], timeout: 5)
+        let data = try! observable.toBlocking().first()
+        
+        // then
+        XCTAssertEqual(data?.totalCount, 40)
     }
 }
