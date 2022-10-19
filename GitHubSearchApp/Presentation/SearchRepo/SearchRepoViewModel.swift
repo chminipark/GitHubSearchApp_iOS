@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 protocol ViewModel {
     associatedtype Input
@@ -17,14 +18,20 @@ protocol ViewModel {
 
 class SearchRepoViewModel: ViewModel {
     struct Input {
+        let searchBarText: Driver<String>
     }
     
     struct Output {
-        @Property var repoList = [Repository]()
+//        @Property var repoList = [Repository]()
+        @Property var searchBarText = ""
     }
     
     func transform(_ input: Input, disposeBag: DisposeBag) -> Output {
-        var output = Output()
+        let output = Output()
+        
+        input.searchBarText
+            .drive(output.$searchBarText)
+            .disposed(by: disposeBag)
         
         return output
     }
