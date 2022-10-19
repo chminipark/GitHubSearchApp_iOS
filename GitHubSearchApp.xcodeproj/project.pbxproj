@@ -15,6 +15,7 @@
 		BD0A633E28F7E25E00C080A5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A633D28F7E25E00C080A5 /* TabBarController.swift */; };
 		BD0A634028F7E2D500C080A5 /* SearchRepoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */; };
 		BD0A634228F7E32700C080A5 /* FavoriteRepoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A634128F7E32700C080A5 /* FavoriteRepoViewController.swift */; };
+		BD2E243B28FFD349003513B0 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2E243A28FFD349003513B0 /* MockURLSession.swift */; };
 		BD33FB9528FEBB0D00F42776 /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD33FB9428FEBB0D00F42776 /* APIEndpoints.swift */; };
 		BD33FB9728FEC5CE00F42776 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD33FB9628FEC5CE00F42776 /* MockData.swift */; };
 		BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBFB70028FD9BD90071FA1C /* SearchRepoRequestDTO.swift */; };
@@ -54,6 +55,7 @@
 		BD0A633D28F7E25E00C080A5 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoViewController.swift; sourceTree = "<group>"; };
 		BD0A634128F7E32700C080A5 /* FavoriteRepoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepoViewController.swift; sourceTree = "<group>"; };
+		BD2E243A28FFD349003513B0 /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
 		BD33FB9428FEBB0D00F42776 /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
 		BD33FB9628FEC5CE00F42776 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		BDBFB70028FD9BD90071FA1C /* SearchRepoRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoRequestDTO.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				BDC09ECF28FD2E790024507F /* GitHubSearchAppTests.swift */,
+				BD2E243A28FFD349003513B0 /* MockURLSession.swift */,
 				BD33FB9628FEC5CE00F42776 /* MockData.swift */,
 			);
 			path = GitHubSearchAppTests;
@@ -494,6 +497,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD2E243B28FFD349003513B0 /* MockURLSession.swift in Sources */,
 				BDC09ED028FD2E790024507F /* GitHubSearchAppTests.swift in Sources */,
 				BD33FB9728FEC5CE00F42776 /* MockData.swift in Sources */,
 			);
