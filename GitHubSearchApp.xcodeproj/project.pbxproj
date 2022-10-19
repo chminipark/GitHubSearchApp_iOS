@@ -16,6 +16,8 @@
 		BD0A634028F7E2D500C080A5 /* SearchRepoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */; };
 		BD0A634228F7E32700C080A5 /* FavoriteRepoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A634128F7E32700C080A5 /* FavoriteRepoViewController.swift */; };
 		BD2E243B28FFD349003513B0 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2E243A28FFD349003513B0 /* MockURLSession.swift */; };
+		BD2E243D28FFE7FE003513B0 /* SearchRepoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2E243C28FFE7FE003513B0 /* SearchRepoViewModel.swift */; };
+		BD2E244229000FD9003513B0 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2E244129000FD9003513B0 /* Property.swift */; };
 		BD33FB9528FEBB0D00F42776 /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD33FB9428FEBB0D00F42776 /* APIEndpoints.swift */; };
 		BD33FB9728FEC5CE00F42776 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD33FB9628FEC5CE00F42776 /* MockData.swift */; };
 		BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBFB70028FD9BD90071FA1C /* SearchRepoRequestDTO.swift */; };
@@ -56,6 +58,8 @@
 		BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoViewController.swift; sourceTree = "<group>"; };
 		BD0A634128F7E32700C080A5 /* FavoriteRepoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepoViewController.swift; sourceTree = "<group>"; };
 		BD2E243A28FFD349003513B0 /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
+		BD2E243C28FFE7FE003513B0 /* SearchRepoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoViewModel.swift; sourceTree = "<group>"; };
+		BD2E244129000FD9003513B0 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		BD33FB9428FEBB0D00F42776 /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
 		BD33FB9628FEC5CE00F42776 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		BDBFB70028FD9BD90071FA1C /* SearchRepoRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoRequestDTO.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 		BD0A632828F7DFE400C080A5 /* GitHubSearchApp */ = {
 			isa = PBXGroup;
 			children = (
+				BD2E243E29000F9D003513B0 /* Support */,
 				BDC09EFC28FD59AF0024507F /* Domain */,
 				BDC09EF728FD569D0024507F /* Data */,
 				BD0A634628F7EF4800C080A5 /* Application */,
@@ -152,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */,
+				BD2E243C28FFE7FE003513B0 /* SearchRepoViewModel.swift */,
 			);
 			path = SearchRepo;
 			sourceTree = "<group>";
@@ -171,6 +177,14 @@
 				BD0A632B28F7DFE400C080A5 /* SceneDelegate.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		BD2E243E29000F9D003513B0 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				BD2E244129000FD9003513B0 /* Property.swift */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 		BD33FB9228FEBABA00F42776 /* Common */ = {
@@ -485,10 +499,12 @@
 				BDC09EC628FD273B0024507F /* Provider.swift in Sources */,
 				BD0A632A28F7DFE400C080A5 /* AppDelegate.swift in Sources */,
 				BDC09EFF28FD59C60024507F /* Repository.swift in Sources */,
+				BD2E243D28FFE7FE003513B0 /* SearchRepoViewModel.swift in Sources */,
 				BDC09EBE28FCDA950024507F /* Endpoint.swift in Sources */,
 				BD0A634028F7E2D500C080A5 /* SearchRepoViewController.swift in Sources */,
 				BDC09EC828FD280C0024507F /* Responsable.swift in Sources */,
 				BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */,
+				BD2E244229000FD9003513B0 /* Property.swift in Sources */,
 				BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
