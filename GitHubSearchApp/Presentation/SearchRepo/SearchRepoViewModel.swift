@@ -15,5 +15,18 @@ protocol ViewModel {
     func transform(_ input: Input, disposeBag: DisposeBag) -> Output
 }
 
-class SearchRepoViewModel {
+class SearchRepoViewModel: ViewModel {
+    struct Input {
+    }
+    
+    struct Output {
+        @Property var repoList = [Repository]()
+    }
+    
+    func transform(_ input: Input, disposeBag: DisposeBag) -> Output {
+        var output = Output()
+        
+        return output
+    }
+    
 }
