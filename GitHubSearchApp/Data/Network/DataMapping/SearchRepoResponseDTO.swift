@@ -9,26 +9,22 @@ import Foundation
 
 struct SearchRepoResponseDTO: Decodable {
     let totalCount: Int
-    let repositories: [RepoInfoDTO]
+    let repositoryDTOList: [RepositoryDTO]
 
     enum CodingKeys: String, CodingKey {
         case totalCount = "total_count"
-        case repositories = "items"
+        case repositoryDTOList = "items"
     }
 }
 
 extension SearchRepoResponseDTO {
     func toDomain() -> [Repository] {
         var repoList = [Repository]()
-        self.repositories.forEach { data in
-            repoList.append(Repository(name: data.repository.name))
+        self.repositoryDTOList.forEach { repo in
+            repoList.append(Repository(name: repo.name))
         }
         return repoList
     }
-}
-
-struct RepoInfoDTO: Decodable {
-    let repository: RepositoryDTO
 }
 
 struct RepositoryDTO: Decodable {
