@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 final class SearchRepoViewController: UIViewController {
     let searchRepoViewModel = SearchRepoViewModel()
