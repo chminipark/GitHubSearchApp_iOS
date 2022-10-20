@@ -19,7 +19,7 @@ protocol ViewModel {
 class SearchRepoViewModel {
     let provider = ProviderImpl(session: URLSession.shared)
     
-    func getRepo(with text: String) -> Single<[Repository]> {
+    func getRepoList(with text: String) -> Single<[Repository]> {
         let searchRepoRequestDTO = SearchRepoRequestDTO(q: text)
         let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
         
@@ -52,20 +52,10 @@ extension SearchRepoViewModel: ViewModel {
             .filter { $0 != "" }
             .withUnretained(self)
             .flatMapLatest { owner, text in
-                owner.getRepo(with: text)
+                owner.getRepoList(with: text)
             }
-            .subscribe(onNext: {data in
-                print(data.first?.name)
-            }, onError: { error in
-                if let error = error as? NetworkError {
-                    print(error.description)
-                } else {
-                    print(error.localizedDescription)
-                }
-            })
+            .bind(to: output.$repoList)
             .disposed(by: disposeBag)
-//            .bind(to: output.$repoList)
-//            .disposed(by: disposeBag)
         
         return output
     }

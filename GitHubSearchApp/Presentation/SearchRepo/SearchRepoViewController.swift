@@ -62,6 +62,12 @@ final class SearchRepoViewController: UIViewController {
                 print(text)
             })
             .disposed(by: disposeBag)
+        
+        output.$repoList
+            .subscribe(onNext: { repoList in
+                print(repoList.count)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupTableView() {
