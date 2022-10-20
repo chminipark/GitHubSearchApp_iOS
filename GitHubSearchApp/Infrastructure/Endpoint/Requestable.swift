@@ -15,10 +15,10 @@ protocol Requestable {
 
 extension Requestable {
     func makeURLRequest() throws -> URLRequest {
-        let urlString = baseURL + path
-        guard var urlComponent = URLComponents(string: urlString) else {
+        guard var urlComponent = URLComponents(string: baseURL) else {
             throw NetworkError.urlComponentError
         }
+        urlComponent.path = path
         
         guard let queryDictionary = try? queryParameter.toDictionary() else {
             throw NetworkError.queryEncodingError
