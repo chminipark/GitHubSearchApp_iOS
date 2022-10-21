@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import RxDataSources
 
-final class SearchRepoViewController: UIViewController {
-    let numberList = (1...20).map { $0 }
+final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
+    let searchRepoViewModel = SearchRepoViewModel()
+    let disposeBag = DisposeBag()
+    var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
     
     private let searchBar: UISearchController = {
         let sb = UISearchController()
@@ -30,6 +35,7 @@ final class SearchRepoViewController: UIViewController {
         configureUI()
         setupSearchBar()
         setupTableView()
+        bindToViewModel()
     }
     
     private func configureUI() {
@@ -44,38 +50,44 @@ final class SearchRepoViewController: UIViewController {
         ])
     }
     
-    private func setupTableView() {
-        self.tableView.dataSource = self
-    }
-    
     private func setupSearchBar() {
         navigationItem.searchController = searchBar
-        searchBar.searchBar.delegate = self
     }
-}
-
-extension SearchRepoViewController: UISearchBarDelegate {
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text else {
-            return
+    
+    private func setupTableView() {
+        self.tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        let configureCell: (TableViewSectionedDataSource<MySection>,
+                            UITableView,
+                            IndexPath,
+                            Repository) -> UITableViewCell
+        = { dataSource, tableView, indexPath, item in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            var content = cell.defaultContentConfiguration()
+            content.text = item.name
+            cell.contentConfiguration = content
+            cell.separatorInset = .zero
+            
+            return cell
         }
-        print(text)
+        self.dataSource = .init(configureCell: configureCell)
     }
-}
-
-extension SearchRepoViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberList.count
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        var content = cell.defaultContentConfiguration()
-        content.text = "\(numberList[indexPath.row])"
-        cell.contentConfiguration = content
+    
+    private func bindToViewModel() {
+        let searchBarText = searchBar.searchBar.rx.text.orEmpty
+            .debounce(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
+            .asDriver(onErrorJustReturn: "")
         
-        cell.separatorInset = .zero
-        return cell
+        let input = SearchRepoViewModel.Input(searchBarText: searchBarText)
+        let output = searchRepoViewModel.transform(input: input, disposeBag: disposeBag)
+        
+        output.$searchBarText
+            .subscribe(onNext: { text in
+                print(text)
+            })
+            .disposed(by: disposeBag)
+        
+        output.$repoList
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
     }
 }
-
-
