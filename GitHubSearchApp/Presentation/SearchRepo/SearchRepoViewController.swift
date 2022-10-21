@@ -59,11 +59,11 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         let configureCell: (TableViewSectionedDataSource<MySection>,
                             UITableView,
                             IndexPath,
-                            TestModel) -> UITableViewCell
+                            Repository) -> UITableViewCell
         = { dataSource, tableView, indexPath, item in
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             var content = cell.defaultContentConfiguration()
-            content.text = item.num
+            content.text = item.name
             cell.contentConfiguration = content
             cell.separatorInset = .zero
             
@@ -73,11 +73,6 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func bindToViewModel() {
-        let data = MySection(headerTitle: "test", items: (1...10).map{ TestModel(num: String($0)) })
-        Observable.just([data])
-            .bind(to: tableView.rx.items(dataSource: dataSource))
-            .disposed(by: disposeBag)
-        
         let searchBarText = searchBar.searchBar.rx.text.orEmpty
             .debounce(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: "")
@@ -91,36 +86,8 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-//        output.$repoList
-//            .bind(to: tableView.rx.items(dataSource: dataSource))
-//            .disposed(by: disposeBag)
-    }
-}
-
-struct TestModel {
-    let num: String
-}
-
-extension TestModel: IdentifiableType, Equatable {
-    var identity: String {
-        return num
-    }
-}
-
-struct MySection {
-    var headerTitle: String
-    var items: [Item]
-}
-
-extension MySection: AnimatableSectionModelType {
-    typealias Item = TestModel
-    
-    var identity: String {
-        return headerTitle
-    }
-    
-    init(original: Self, items: [Item]) {
-        self = original
-        self.items = items
+        output.$repoList
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
     }
 }

@@ -19,13 +19,15 @@ protocol ViewModel {
 class SearchRepoViewModel {
     let provider = ProviderImpl(session: URLSession.shared)
     
-    func getRepoList(with text: String) -> Single<[Repository]> {
+    func getRepoList(with text: String) -> Single<[MySection]> {
         let searchRepoRequestDTO = SearchRepoRequestDTO(q: text)
         let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
+        var mySection = MySection(headerTitle: "mySection", items: [])
         
         return provider.request(endpoint: endpoint)
-            .map { data in
-                data.toDomain()
+            .map { data -> [MySection] in
+                mySection.items = data.toDomain()
+                return [mySection]
             }
     }
 }
@@ -36,7 +38,7 @@ extension SearchRepoViewModel: ViewModel {
     }
     
     struct Output {
-        @Property var repoList = [Repository]()
+        @Property var repoList = [MySection]()
         @Property var searchBarText = ""
     }
     
@@ -59,5 +61,4 @@ extension SearchRepoViewModel: ViewModel {
         
         return output
     }
-    
 }
