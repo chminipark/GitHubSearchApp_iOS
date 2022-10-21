@@ -6,7 +6,13 @@
 //
 
 import Foundation
+import Differentiator
 
-struct Repository {
+struct Repository: IdentifiableType, Equatable {
+    let id = UUID()
     let name: String
+    
+    var identity: UUID {
+        return id
+    }
 }
