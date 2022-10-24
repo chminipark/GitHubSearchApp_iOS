@@ -9,13 +9,6 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol ViewModel {
-    associatedtype Input
-    associatedtype Output
-    
-    func transform(input: Input, disposeBag: DisposeBag) -> Output
-}
-
 class SearchRepoViewModel {
     let repoUseCase: RepoUseCase
     
@@ -27,7 +20,7 @@ class SearchRepoViewModel {
 
 extension SearchRepoViewModel: ViewModel {
     struct Input {
-        let searchBarText: Driver<String>
+        let searchBarText: Observable<String>
     }
     
     struct Output {
@@ -37,13 +30,14 @@ extension SearchRepoViewModel: ViewModel {
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        let searchTextWithDebounce = input.searchBarText
+            .debounce(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
         
-        input.searchBarText
-            .drive(output.$searchBarText)
+        searchTextWithDebounce
+            .bind(to: output.$searchBarText)
             .disposed(by: disposeBag)
         
-        input.searchBarText
-            .asObservable()
+        searchTextWithDebounce
             .withUnretained(self)
             .flatMap { (owner, text) in
                 owner.repoUseCase.getRepoList(searchText: text)

@@ -24,6 +24,7 @@
 		BD7A22FC290403B7006AFC5C /* DefaultRepoGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A22FB290403B7006AFC5C /* DefaultRepoGateway.swift */; };
 		BD7A22FF29040E20006AFC5C /* DefaultRepoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A22FE29040E20006AFC5C /* DefaultRepoUseCase.swift */; };
 		BD7A230229066EF1006AFC5C /* URLSessionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A230129066EF1006AFC5C /* URLSessionable.swift */; };
+		BD7A230429067298006AFC5C /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A230329067298006AFC5C /* ViewModelType.swift */; };
 		BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBFB70028FD9BD90071FA1C /* SearchRepoRequestDTO.swift */; };
 		BDC09EBE28FCDA950024507F /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EBD28FCDA940024507F /* Endpoint.swift */; };
 		BDC09EC028FD20AD0024507F /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EBF28FD20AD0024507F /* Requestable.swift */; };
@@ -70,6 +71,7 @@
 		BD7A22FB290403B7006AFC5C /* DefaultRepoGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRepoGateway.swift; sourceTree = "<group>"; };
 		BD7A22FE29040E20006AFC5C /* DefaultRepoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRepoUseCase.swift; sourceTree = "<group>"; };
 		BD7A230129066EF1006AFC5C /* URLSessionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionable.swift; sourceTree = "<group>"; };
+		BD7A230329067298006AFC5C /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		BDBFB70028FD9BD90071FA1C /* SearchRepoRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoRequestDTO.swift; sourceTree = "<group>"; };
 		BDC09EBD28FCDA940024507F /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BDC09EBF28FD20AD0024507F /* Requestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				BD0A633D28F7E25E00C080A5 /* TabBarController.swift */,
 				BD0A634428F7EEE400C080A5 /* SearchRepo */,
 				BD0A634528F7EEF000C080A5 /* FavoriteRepo */,
+				BD7A230329067298006AFC5C /* ViewModelType.swift */,
 				BD7A22C429027708006AFC5C /* MySection.swift */,
 			);
 			path = Presentation;
@@ -538,6 +541,7 @@
 				BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */,
 				BD2E244229000FD9003513B0 /* Property.swift in Sources */,
 				BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */,
+				BD7A230429067298006AFC5C /* ViewModelType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -73,9 +73,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func bindToViewModel() {
-        let searchBarText = searchBar.searchBar.rx.text.orEmpty
-            .debounce(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
-            .asDriver(onErrorJustReturn: "")
+        let searchBarText = searchBar.searchBar.rx.text.orEmpty.asObservable()
         
         let input = SearchRepoViewModel.Input(searchBarText: searchBarText)
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
