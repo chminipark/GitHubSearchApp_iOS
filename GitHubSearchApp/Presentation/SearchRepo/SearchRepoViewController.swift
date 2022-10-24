@@ -11,9 +11,9 @@ import RxCocoa
 import RxDataSources
 
 final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
-    let searchRepoViewModel = SearchRepoViewModel()
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
+    let viewModel = SearchRepoViewModel()
     
     private let searchBar: UISearchController = {
         let sb = UISearchController()
@@ -73,12 +73,10 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func bindToViewModel() {
-        let searchBarText = searchBar.searchBar.rx.text.orEmpty
-            .debounce(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
-            .asDriver(onErrorJustReturn: "")
+        let searchBarText = searchBar.searchBar.rx.text.orEmpty.asObservable()
         
         let input = SearchRepoViewModel.Input(searchBarText: searchBarText)
-        let output = searchRepoViewModel.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
         output.$searchBarText
             .subscribe(onNext: { text in

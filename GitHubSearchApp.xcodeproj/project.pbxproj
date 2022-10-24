@@ -21,6 +21,10 @@
 		BD33FB9528FEBB0D00F42776 /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD33FB9428FEBB0D00F42776 /* APIEndpoints.swift */; };
 		BD33FB9728FEC5CE00F42776 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD33FB9628FEC5CE00F42776 /* MockData.swift */; };
 		BD7A22C529027708006AFC5C /* MySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A22C429027708006AFC5C /* MySection.swift */; };
+		BD7A22FC290403B7006AFC5C /* DefaultRepoGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A22FB290403B7006AFC5C /* DefaultRepoGateway.swift */; };
+		BD7A22FF29040E20006AFC5C /* DefaultRepoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A22FE29040E20006AFC5C /* DefaultRepoUseCase.swift */; };
+		BD7A230229066EF1006AFC5C /* URLSessionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A230129066EF1006AFC5C /* URLSessionable.swift */; };
+		BD7A230429067298006AFC5C /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A230329067298006AFC5C /* ViewModelType.swift */; };
 		BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBFB70028FD9BD90071FA1C /* SearchRepoRequestDTO.swift */; };
 		BDC09EBE28FCDA950024507F /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EBD28FCDA940024507F /* Endpoint.swift */; };
 		BDC09EC028FD20AD0024507F /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EBF28FD20AD0024507F /* Requestable.swift */; };
@@ -64,6 +68,10 @@
 		BD33FB9428FEBB0D00F42776 /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
 		BD33FB9628FEC5CE00F42776 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		BD7A22C429027708006AFC5C /* MySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySection.swift; sourceTree = "<group>"; };
+		BD7A22FB290403B7006AFC5C /* DefaultRepoGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRepoGateway.swift; sourceTree = "<group>"; };
+		BD7A22FE29040E20006AFC5C /* DefaultRepoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRepoUseCase.swift; sourceTree = "<group>"; };
+		BD7A230129066EF1006AFC5C /* URLSessionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionable.swift; sourceTree = "<group>"; };
+		BD7A230329067298006AFC5C /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		BDBFB70028FD9BD90071FA1C /* SearchRepoRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoRequestDTO.swift; sourceTree = "<group>"; };
 		BDC09EBD28FCDA940024507F /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BDC09EBF28FD20AD0024507F /* Requestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
@@ -134,12 +142,12 @@
 		BD0A632828F7DFE400C080A5 /* GitHubSearchApp */ = {
 			isa = PBXGroup;
 			children = (
-				BD2E243E29000F9D003513B0 /* Support */,
 				BDC09EFC28FD59AF0024507F /* Domain */,
 				BDC09EF728FD569D0024507F /* Data */,
-				BD0A634628F7EF4800C080A5 /* Application */,
 				BD0A634328F7EEDA00C080A5 /* Presentation */,
 				BDC09EBB28FCDA790024507F /* Infrastructure */,
+				BD2E243E29000F9D003513B0 /* Support */,
+				BD0A634628F7EF4800C080A5 /* Application */,
 				BDC09EC328FD233F0024507F /* Resources */,
 			);
 			path = GitHubSearchApp;
@@ -151,6 +159,7 @@
 				BD0A633D28F7E25E00C080A5 /* TabBarController.swift */,
 				BD0A634428F7EEE400C080A5 /* SearchRepo */,
 				BD0A634528F7EEF000C080A5 /* FavoriteRepo */,
+				BD7A230329067298006AFC5C /* ViewModelType.swift */,
 				BD7A22C429027708006AFC5C /* MySection.swift */,
 			);
 			path = Presentation;
@@ -206,10 +215,25 @@
 			path = APIEndpoints;
 			sourceTree = "<group>";
 		};
+		BD7A22FA29040398006AFC5C /* Gateways */ = {
+			isa = PBXGroup;
+			children = (
+				BD7A22FB290403B7006AFC5C /* DefaultRepoGateway.swift */,
+			);
+			path = Gateways;
+			sourceTree = "<group>";
+		};
+		BD7A22FD29040DF3006AFC5C /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				BD7A22FE29040E20006AFC5C /* DefaultRepoUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
 		BDC09EBB28FCDA790024507F /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				BD33FB9328FEBAFF00F42776 /* APIEndpoints */,
 				BD33FB9228FEBABA00F42776 /* Common */,
 				BDC09EC428FD27340024507F /* Provider */,
 				BDC09EBC28FCDA890024507F /* Endpoint */,
@@ -241,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				BDC09EC528FD273B0024507F /* Provider.swift */,
+				BD7A230129066EF1006AFC5C /* URLSessionable.swift */,
 			);
 			path = Provider;
 			sourceTree = "<group>";
@@ -258,6 +283,7 @@
 		BDC09EF728FD569D0024507F /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				BD7A22FA29040398006AFC5C /* Gateways */,
 				BDC09EF828FD56A10024507F /* Network */,
 			);
 			path = Data;
@@ -266,6 +292,7 @@
 		BDC09EF828FD56A10024507F /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				BD33FB9328FEBAFF00F42776 /* APIEndpoints */,
 				BDC09EF928FD56A90024507F /* DataMapping */,
 			);
 			path = Network;
@@ -283,6 +310,7 @@
 		BDC09EFC28FD59AF0024507F /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				BD7A22FD29040DF3006AFC5C /* UseCases */,
 				BDC09EFD28FD59BC0024507F /* Entities */,
 			);
 			path = Domain;
@@ -497,12 +525,15 @@
 				BD33FB9528FEBB0D00F42776 /* APIEndpoints.swift in Sources */,
 				BD7A22C529027708006AFC5C /* MySection.swift in Sources */,
 				BDC09EC228FD228C0024507F /* NetworkError.swift in Sources */,
+				BD7A22FC290403B7006AFC5C /* DefaultRepoGateway.swift in Sources */,
 				BDC09EFB28FD56CA0024507F /* SearchRepoResponseDTO.swift in Sources */,
+				BD7A230229066EF1006AFC5C /* URLSessionable.swift in Sources */,
 				BDC09EC028FD20AD0024507F /* Requestable.swift in Sources */,
 				BD0A633E28F7E25E00C080A5 /* TabBarController.swift in Sources */,
 				BDC09EC628FD273B0024507F /* Provider.swift in Sources */,
 				BD0A632A28F7DFE400C080A5 /* AppDelegate.swift in Sources */,
 				BDC09EFF28FD59C60024507F /* Repository.swift in Sources */,
+				BD7A22FF29040E20006AFC5C /* DefaultRepoUseCase.swift in Sources */,
 				BD2E243D28FFE7FE003513B0 /* SearchRepoViewModel.swift in Sources */,
 				BDC09EBE28FCDA950024507F /* Endpoint.swift in Sources */,
 				BD0A634028F7E2D500C080A5 /* SearchRepoViewController.swift in Sources */,
@@ -510,6 +541,7 @@
 				BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */,
 				BD2E244229000FD9003513B0 /* Property.swift in Sources */,
 				BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */,
+				BD7A230429067298006AFC5C /* ViewModelType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

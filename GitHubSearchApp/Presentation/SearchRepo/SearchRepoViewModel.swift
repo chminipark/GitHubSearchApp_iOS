@@ -9,32 +9,18 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol ViewModel {
-    associatedtype Input
-    associatedtype Output
-    
-    func transform(input: Input, disposeBag: DisposeBag) -> Output
-}
-
 class SearchRepoViewModel {
-    let provider = ProviderImpl(session: URLSession.shared)
+    let repoUseCase: RepoUseCase
     
-    func getRepoList(with text: String) -> Single<[MySection]> {
-        let searchRepoRequestDTO = SearchRepoRequestDTO(q: text)
-        let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
-        var mySection = MySection(headerTitle: "mySection", items: [])
-        
-        return provider.request(endpoint: endpoint)
-            .map { data -> [MySection] in
-                mySection.items = data.toDomain()
-                return [mySection]
-            }
+    init() {
+        let repoGateWay = DefaultRepoGateway()
+        self.repoUseCase = DefaultRepoUseCase(repoGateWay: repoGateWay)
     }
 }
 
 extension SearchRepoViewModel: ViewModel {
     struct Input {
-        let searchBarText: Driver<String>
+        let searchBarText: Observable<String>
     }
     
     struct Output {
@@ -44,17 +30,17 @@ extension SearchRepoViewModel: ViewModel {
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        let searchTextWithDebounce = input.searchBarText
+            .debounce(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
         
-        input.searchBarText
-            .drive(output.$searchBarText)
+        searchTextWithDebounce
+            .bind(to: output.$searchBarText)
             .disposed(by: disposeBag)
         
-        input.searchBarText
-            .asObservable()
-            .filter { $0 != "" }
+        searchTextWithDebounce
             .withUnretained(self)
-            .flatMapLatest { owner, text in
-                owner.getRepoList(with: text)
+            .flatMap { (owner, text) in
+                owner.repoUseCase.getRepoList(searchText: text)
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
