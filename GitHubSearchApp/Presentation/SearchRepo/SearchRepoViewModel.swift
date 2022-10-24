@@ -17,18 +17,11 @@ protocol ViewModel {
 }
 
 class SearchRepoViewModel {
-    let provider = ProviderImpl(session: URLSession.shared)
+    let repoUseCase: RepoUseCase
     
-    func getRepoList(with text: String) -> Single<[MySection]> {
-        let searchRepoRequestDTO = SearchRepoRequestDTO(q: text)
-        let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
-        var mySection = MySection(headerTitle: "mySection", items: [])
-        
-        return provider.request(endpoint: endpoint)
-            .map { data -> [MySection] in
-                mySection.items = data.toDomain()
-                return [mySection]
-            }
+    init() {
+        let repoGateWay = DefaultRepoGateway()
+        self.repoUseCase = DefaultRepoUseCase(repoGateWay: repoGateWay)
     }
 }
 
@@ -51,10 +44,9 @@ extension SearchRepoViewModel: ViewModel {
         
         input.searchBarText
             .asObservable()
-            .filter { $0 != "" }
             .withUnretained(self)
-            .flatMapLatest { owner, text in
-                owner.getRepoList(with: text)
+            .flatMap { (owner, text) in
+                owner.repoUseCase.getRepoList(searchText: text)
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
