@@ -142,12 +142,12 @@
 		BD0A632828F7DFE400C080A5 /* GitHubSearchApp */ = {
 			isa = PBXGroup;
 			children = (
-				BD2E243E29000F9D003513B0 /* Support */,
 				BDC09EFC28FD59AF0024507F /* Domain */,
 				BDC09EF728FD569D0024507F /* Data */,
-				BD0A634628F7EF4800C080A5 /* Application */,
 				BD0A634328F7EEDA00C080A5 /* Presentation */,
 				BDC09EBB28FCDA790024507F /* Infrastructure */,
+				BD2E243E29000F9D003513B0 /* Support */,
+				BD0A634628F7EF4800C080A5 /* Application */,
 				BDC09EC328FD233F0024507F /* Resources */,
 			);
 			path = GitHubSearchApp;
