@@ -64,6 +64,10 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             var content = cell.defaultContentConfiguration()
             content.text = item.name
+            content.secondaryText = item.description
+            let image = UIImage(systemName: "star.fill")
+            cell.accessoryView = UIImageView(image: image)
+            
             cell.contentConfiguration = content
             cell.separatorInset = .zero
             
