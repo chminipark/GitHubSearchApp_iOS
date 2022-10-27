@@ -11,6 +11,8 @@ import Differentiator
 struct Repository: IdentifiableType, Equatable {
     let id = UUID()
     let name: String
+    let description: String
+    let starCount: Int
     
     var identity: UUID {
         return id
