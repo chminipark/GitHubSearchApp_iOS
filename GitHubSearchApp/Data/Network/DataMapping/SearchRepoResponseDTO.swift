@@ -21,7 +21,11 @@ extension SearchRepoResponseDTO {
     func toDomain() -> [Repository] {
         var repoList = [Repository]()
         self.repositoryDTOList.forEach { repo in
-            repoList.append(Repository(name: repo.name))
+            repoList.append(
+                Repository(name: repo.name,
+                           description: repo.description,
+                           starCount: repo.starCount)
+            )
         }
         return repoList
     }
@@ -29,4 +33,12 @@ extension SearchRepoResponseDTO {
 
 struct RepositoryDTO: Decodable {
     let name: String
+    let description: String
+    let starCount: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case description
+        case starCount = "stargazers_count"
+    }
 }
