@@ -11,6 +11,8 @@ import RxCocoa
 
 class SearchRepoViewModel {
     let repoUseCase: RepoUseCase
+    var searchText: String = ""
+    var currentPage: Int = 1
     
     init() {
         let repoGateWay = DefaultRepoGateway()
@@ -32,6 +34,12 @@ extension SearchRepoViewModel: ViewModel {
         let output = Output()
         let searchTextWithDebounce = input.searchBarText
             .debounce(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
+            .filter { [weak self] text in
+                guard let `self` = self else {
+                    return false
+                }
+                return (text != "" && text != `self`.searchText)
+            }
         
         searchTextWithDebounce
             .bind(to: output.$searchBarText)
@@ -39,8 +47,10 @@ extension SearchRepoViewModel: ViewModel {
         
         searchTextWithDebounce
             .withUnretained(self)
-            .flatMap { (owner, text) in
-                owner.repoUseCase.getRepoList(searchText: text)
+            .flatMap { (owner, text) -> Observable<[MySection]> in
+                owner.currentPage = 1
+                owner.searchText = text
+                return owner.repoUseCase.getRepoList(searchText: text, currentPage: 1)
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
