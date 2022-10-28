@@ -120,3 +120,16 @@ extension SearchRepoViewController: UITableViewDelegate {
 }
 
 extension SearchRepoViewController: UIViewControllerTransitioningDelegate {}
+
+extension SearchRepoViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let totalHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        let currentYOffset = scrollView.contentOffset.y
+        let remainFromBottom = totalHeight - currentYOffset
+        
+        if remainFromBottom < frameHeight * 2 {
+            
+        }
+    }
+}

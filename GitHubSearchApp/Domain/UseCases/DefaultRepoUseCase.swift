@@ -29,7 +29,11 @@ class DefaultRepoUseCase: RepoUseCase {
             .withUnretained(self)
             .flatMap { (owner, text) in
                 return owner.repoGateWay
-                    .fetchRepoList(with: SearchRepoRequestDTO(q: text))
+                    .fetchRepoList(with:
+                                    SearchRepoRequestDTO(searchString: text,
+                                                         perPage: 20,
+                                                         currentPage: 1)
+                    )
             }
             .withUnretained(self)
             .map { (owner, data) -> [MySection] in
