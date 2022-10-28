@@ -74,6 +74,12 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             return cell
         }
         self.dataSource = .init(configureCell: configureCell)
+        
+        tableView.rx.modelSelected(Repository.self)
+            .subscribe(onNext: { repo in
+                print(repo.name)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindToViewModel() {
@@ -92,4 +98,22 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
     }
+    
+//    guard let url = URL(string: "https://www.naver.com") else { return }
+//    let safariVC = SFSafariViewController(url: url)
+//    // 🔥 delegate 지정 및 presentation style 설정.
+//    safariVC.transitioningDelegate = self
+//    safariVC.modalPresentationStyle = .pageSheet
+//
+//    present(safariVC, animated: true, completion: nil)
+    
+    
 }
+
+extension SearchRepoViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension SearchRepoViewController: UIViewControllerTransitioningDelegate {}
