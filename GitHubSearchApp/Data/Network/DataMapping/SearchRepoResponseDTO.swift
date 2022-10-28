@@ -24,7 +24,8 @@ extension SearchRepoResponseDTO {
             repoList.append(
                 Repository(name: repo.name,
                            description: repo.description,
-                           starCount: repo.starCount)
+                           starCount: repo.starCount,
+                           urlString: repo.urlString)
             )
         }
         return repoList
@@ -35,10 +36,12 @@ struct RepositoryDTO: Decodable {
     let name: String
     let description: String
     let starCount: Int
+    let urlString: String
     
     enum CodingKeys: String, CodingKey {
         case name
         case description
         case starCount = "stargazers_count"
+        case urlString = "html_url"
     }
 }

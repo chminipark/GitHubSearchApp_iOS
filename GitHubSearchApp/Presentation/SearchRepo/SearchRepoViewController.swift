@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxDataSources
+import SafariServices
 
 final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     let disposeBag = DisposeBag()
@@ -76,8 +77,9 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         self.dataSource = .init(configureCell: configureCell)
         
         tableView.rx.modelSelected(Repository.self)
-            .subscribe(onNext: { repo in
-                print(repo.name)
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, repo) in
+                owner.openInSafari(repo.urlString)
             })
             .disposed(by: disposeBag)
     }
@@ -99,15 +101,16 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
     }
     
-//    guard let url = URL(string: "https://www.naver.com") else { return }
-//    let safariVC = SFSafariViewController(url: url)
-//    // 🔥 delegate 지정 및 presentation style 설정.
-//    safariVC.transitioningDelegate = self
-//    safariVC.modalPresentationStyle = .pageSheet
-//
-//    present(safariVC, animated: true, completion: nil)
-    
-    
+    private func openInSafari(_ urlString: String) {
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.transitioningDelegate = self
+        safariVC.modalPresentationStyle = .pageSheet
+        
+        present(safariVC, animated: true)
+    }
 }
 
 extension SearchRepoViewController: UITableViewDelegate {
