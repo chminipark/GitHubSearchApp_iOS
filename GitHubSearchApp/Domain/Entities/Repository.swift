@@ -13,6 +13,7 @@ struct Repository: IdentifiableType, Equatable {
     let name: String
     let description: String
     let starCount: Int
+    let urlString: String
     
     var identity: UUID {
         return id

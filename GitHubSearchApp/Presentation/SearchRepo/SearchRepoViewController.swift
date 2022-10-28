@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxDataSources
+import SafariServices
 
 final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     let disposeBag = DisposeBag()
@@ -74,6 +75,13 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             return cell
         }
         self.dataSource = .init(configureCell: configureCell)
+        
+        tableView.rx.modelSelected(Repository.self)
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, repo) in
+                owner.openInSafari(repo.urlString)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindToViewModel() {
@@ -92,4 +100,23 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
     }
+    
+    private func openInSafari(_ urlString: String) {
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.transitioningDelegate = self
+        safariVC.modalPresentationStyle = .pageSheet
+        
+        present(safariVC, animated: true)
+    }
 }
+
+extension SearchRepoViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension SearchRepoViewController: UIViewControllerTransitioningDelegate {}
