@@ -128,8 +128,8 @@ extension SearchRepoViewController {
         let currentYOffset = scrollView.contentOffset.y
         let remainFromBottom = totalHeight - currentYOffset
         
-        if remainFromBottom < frameHeight * 2 {
-//            viewModel.pagination.onNext(())
+        if remainFromBottom < frameHeight * 2 && viewModel.viewState == .idle {
+            viewModel.pagination.onNext(())
         }
     }
 }

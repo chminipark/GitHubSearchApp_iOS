@@ -81,7 +81,6 @@ extension SearchRepoViewModel: ViewModelType {
             }
             .flatMap { (owner, originData) -> Observable<[MySection]> in
                 owner.setPaginationFetching()
-                
                 return owner.repoUseCase.getRepoList(searchText: owner.searchText,
                                                      currentPage: owner.currentPage,
                                                      originData: originData!)
