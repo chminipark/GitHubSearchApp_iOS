@@ -7,7 +7,11 @@
 
 import Foundation
 
-enum NetworkError: Error {
+enum NetworkError: Error, Equatable {
+    static func == (lhs: NetworkError, rhs: NetworkError) -> Bool {
+        return lhs.description == rhs.description
+    }
+    
     case urlComponentError
     case queryEncodingError
     case makeURLError
@@ -16,6 +20,7 @@ enum NetworkError: Error {
     case statusCodeError(Int)
     case noDataError
     case decodingError
+    case requestLimitError
     
     var description: String {
         let base = "😡😡😡😡😡"
@@ -36,6 +41,8 @@ enum NetworkError: Error {
             return base + "noDataError"
         case .decodingError:
             return base + "decodingError"
+        case .requestLimitError:
+            return base + "requestLimitError"
         }
     }
 }

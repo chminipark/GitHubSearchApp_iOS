@@ -12,6 +12,7 @@ import RxCocoa
 enum ViewState {
     case idle
     case isLoading
+    case requestLimit
 }
 
 class SearchRepoViewModel {
@@ -85,7 +86,26 @@ extension SearchRepoViewModel: ViewModelType {
                                                      currentPage: owner.currentPage,
                                                      originData: originData!)
             }
+            .materialize()
             .withUnretained(self)
+            .map { owner, event -> Event<[MySection]> in
+                switch event {
+                case .error(let error):
+                    if let error = error as? NetworkError,
+                       error == .requestLimitError {
+                        owner.viewState = .requestLimit
+                    }
+                    return .next([])
+                default:
+                    return event
+                }
+            }
+            .dematerialize()
+            .withUnretained(self)
+            .filter { (owner, _) -> Bool in
+                print(owner.viewState)
+                return owner.viewState == .isLoading
+            }
             .map { (owner, mySection) -> [MySection] in
                 owner.viewState = .idle
                 return mySection
@@ -121,5 +141,11 @@ extension SearchRepoViewModel {
         }
         
         return false
+    }
+    
+    func finishFetching() {
+        if viewState != .requestLimit {
+            viewState = .idle
+        }
     }
 }

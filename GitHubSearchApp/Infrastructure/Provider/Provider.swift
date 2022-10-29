@@ -65,6 +65,9 @@ class ProviderImpl: Provider {
         }
 
         if response.statusCode != 200 {
+            if response.statusCode == 403 {
+                completion(.failure(NetworkError.requestLimitError))
+            }
             completion(.failure(NetworkError.statusCodeError(response.statusCode)))
             return
         }
