@@ -25,6 +25,7 @@ class SearchRepoViewModel {
             switch viewState {
             case .requestLimit:
                 print(viewState)
+                alertRequestLimit.onNext(())
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10)) { [weak self] in
                     guard let `self` = self else {
                         return
@@ -38,6 +39,7 @@ class SearchRepoViewModel {
     }
     
     let pagination = PublishSubject<Void>()
+    let alertRequestLimit = PublishSubject<Void>()
     
     init() {
         let repoGateWay = DefaultRepoGateway()
