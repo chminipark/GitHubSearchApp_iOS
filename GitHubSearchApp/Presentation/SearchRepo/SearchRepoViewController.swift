@@ -99,6 +99,12 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         output.$repoList
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+        
+        viewModel.alertRequestLimit
+            .subscribe(with: self, onNext: { (owner, _) in
+                owner.showRequestLimitAlert()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func openInSafari(_ urlString: String) {
@@ -111,6 +117,15 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         
         present(safariVC, animated: true)
     }
+    
+    private func showRequestLimitAlert() {
+        let alertController = UIAlertController(title: "API Request Limit", message: "10 per miniute, try after 1 minute", preferredStyle: .alert)
+        let action = UIAlertAction(title: "확인", style: .default)
+        alertController.addAction(action)
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true)
+        }
+    }
 }
 
 extension SearchRepoViewController: UITableViewDelegate {
@@ -120,3 +135,16 @@ extension SearchRepoViewController: UITableViewDelegate {
 }
 
 extension SearchRepoViewController: UIViewControllerTransitioningDelegate {}
+
+extension SearchRepoViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let totalHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        let currentYOffset = scrollView.contentOffset.y
+        let remainFromBottom = totalHeight - currentYOffset
+        
+        if remainFromBottom < frameHeight * 2 && viewModel.viewState == .idle {
+            viewModel.pagination.onNext(())
+        }
+    }
+}

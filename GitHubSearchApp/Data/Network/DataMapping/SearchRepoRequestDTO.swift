@@ -8,5 +8,13 @@
 import Foundation
 
 struct SearchRepoRequestDTO: Encodable {
-    let q: String
+    let searchText: String
+    let perPage: Int = 20
+    let currentPage: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case searchText = "q"
+        case perPage = "per_page"
+        case currentPage = "page"
+    }
 }
