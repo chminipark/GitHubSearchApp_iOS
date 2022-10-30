@@ -144,7 +144,6 @@ extension SearchRepoViewController {
         let remainFromBottom = totalHeight - currentYOffset
         
         if remainFromBottom < frameHeight * 2 && viewModel.viewState == .idle {
-            print(111)
             viewModel.pagination.onNext(())
         }
     }

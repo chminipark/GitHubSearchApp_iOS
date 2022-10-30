@@ -24,7 +24,6 @@ class SearchRepoViewModel {
         didSet {
             switch viewState {
             case .requestLimit:
-                print(viewState)
                 alertRequestLimit.onNext(())
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10)) { [weak self] in
                     guard let `self` = self else {
@@ -33,7 +32,7 @@ class SearchRepoViewModel {
                     `self`.viewState = .idle
                 }
             default:
-                print(viewState)
+                break
             }
         }
     }
