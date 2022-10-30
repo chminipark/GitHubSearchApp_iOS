@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 protocol Provider {
-    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Single<R> where E.Response == R
+    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Observable<Result<R, Error>> where E.Response == R
 }
 
 class ProviderImpl: Provider {
@@ -20,9 +20,9 @@ class ProviderImpl: Provider {
         self.session = session
     }
 
-    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Single<R> where E.Response == R {
+    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Observable<Result<R, Error>> where E.Response == R {
         
-        return Single.create { [weak self] emitter in
+        return Observable.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
             }
@@ -36,17 +36,17 @@ class ProviderImpl: Provider {
                         case .success(let data):
                             do {
                                 let decodedData = try JSONDecoder().decode(R.self, from: data)
-                                emitter(.success(decodedData))
+                                emitter.onNext(.success(decodedData))
                             } catch {
-                                emitter(.failure(NetworkError.decodingError))
+                                emitter.onNext(.failure(NetworkError.decodingError))
                             }
                         case .failure(let error):
-                            emitter(.failure(error))
+                            emitter.onNext(.failure(error))
                         }
                     }
                 }.resume()
             } catch {
-                emitter(.failure(error))
+                emitter.onNext(.failure(error))
             }
 
             return Disposables.create()
