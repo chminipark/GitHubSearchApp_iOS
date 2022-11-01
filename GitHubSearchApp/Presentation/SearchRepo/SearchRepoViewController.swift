@@ -67,15 +67,8 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             else {
                 return SearchRepoTableViewCell()
             }
-            var content = cell.defaultContentConfiguration()
-            content.text = item.name
-            content.secondaryText = item.description
-            let image = UIImage(systemName: "star.fill")
-            cell.accessoryView = UIImageView(image: image)
             
-            cell.contentConfiguration = content
-            cell.separatorInset = .zero
-            
+            cell.bind(model: item)
             return cell
         }
         self.dataSource = .init(configureCell: configureCell)

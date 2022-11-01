@@ -17,4 +17,15 @@ class SearchRepoTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func bind(model: Repository) {
+        var content = self.defaultContentConfiguration()
+        content.text = model.name
+        content.secondaryText = model.description
+        let image = UIImage(systemName: "star.fill")
+        self.accessoryView = UIImageView(image: image)
+        
+        self.contentConfiguration = content
+        self.separatorInset = .zero
+    }
 }
