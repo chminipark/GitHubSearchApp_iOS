@@ -25,7 +25,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(SearchRepoTableViewCell.self, forCellReuseIdentifier: SearchRepoTableViewCell.cellId)
         return tableView
     }()
     
@@ -60,9 +60,13 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         let configureCell: (TableViewSectionedDataSource<MySection>,
                             UITableView,
                             IndexPath,
-                            Repository) -> UITableViewCell
+                            Repository) -> SearchRepoTableViewCell
         = { dataSource, tableView, indexPath, item in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchRepoTableViewCell.cellId,
+                                                           for: indexPath) as? SearchRepoTableViewCell
+            else {
+                return SearchRepoTableViewCell()
+            }
             var content = cell.defaultContentConfiguration()
             content.text = item.name
             content.secondaryText = item.description
