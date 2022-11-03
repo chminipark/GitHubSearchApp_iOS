@@ -26,6 +26,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(SearchRepoTableViewCell.self, forCellReuseIdentifier: SearchRepoTableViewCell.cellId)
+        tableView.separatorInset = .zero
         return tableView
     }()
     
@@ -68,7 +69,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
                 return SearchRepoTableViewCell()
             }
             
-            cell.bind(model: item)
+            cell.bind(repository: item)
             return cell
         }
         self.dataSource = .init(configureCell: configureCell)
