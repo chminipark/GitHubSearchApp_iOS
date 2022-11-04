@@ -15,7 +15,7 @@ extension RepoModel {
     }
 
     @NSManaged public var urlString: String?
-    @NSManaged public var starCount: Int16
+    @NSManaged public var starCount: Int64
     @NSManaged public var repoDescription: String?
     @NSManaged public var name: String?
     @NSManaged public var id: UUID?
