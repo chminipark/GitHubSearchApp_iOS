@@ -42,6 +42,7 @@
 		BDC688CD2915166800D7758D /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688CC2915166800D7758D /* CoreDataError.swift */; };
 		BDC688D1291523D400D7758D /* RepoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688CF291523D400D7758D /* RepoModel+CoreDataClass.swift */; };
 		BDC688D2291523D400D7758D /* RepoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688D0291523D400D7758D /* RepoModel+CoreDataProperties.swift */; };
+		BDC688DA29152F3000D7758D /* DefaultCoreDataRepoGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688D929152F3000D7758D /* DefaultCoreDataRepoGateway.swift */; };
 		F81208C461FC6660A2737111 /* Pods_GitHubSearchAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067BC383C3DCAF581F361FE8 /* Pods_GitHubSearchAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +99,7 @@
 		BDC688CC2915166800D7758D /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		BDC688CF291523D400D7758D /* RepoModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RepoModel+CoreDataClass.swift"; path = "GitHubSearchApp/Data/CoreData/DataMapping/RepoModel+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		BDC688D0291523D400D7758D /* RepoModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RepoModel+CoreDataProperties.swift"; path = "GitHubSearchApp/Data/CoreData/DataMapping/RepoModel+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		BDC688D929152F3000D7758D /* DefaultCoreDataRepoGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCoreDataRepoGateway.swift; sourceTree = "<group>"; };
 		BDE6379028FD6FBE001EEB7B /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379228FD6FC8001EEB7B /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379428FD6FD0001EEB7B /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -236,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				BD7A22FB290403B7006AFC5C /* DefaultAPIRepoGateway.swift */,
+				BDC688D929152F3000D7758D /* DefaultCoreDataRepoGateway.swift */,
 			);
 			path = Gateways;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				BD33FB9528FEBB0D00F42776 /* APIEndpoints.swift in Sources */,
 				BD7A22C529027708006AFC5C /* MySection.swift in Sources */,
 				BD00FC0329111D760099AFBD /* SearchRepoTableViewCell.swift in Sources */,
+				BDC688DA29152F3000D7758D /* DefaultCoreDataRepoGateway.swift in Sources */,
 				BDC09EC228FD228C0024507F /* NetworkError.swift in Sources */,
 				BD7A22FC290403B7006AFC5C /* DefaultAPIRepoGateway.swift in Sources */,
 				BDC09EFB28FD56CA0024507F /* SearchRepoResponseDTO.swift in Sources */,
