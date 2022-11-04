@@ -1,5 +1,5 @@
 //
-//  DefaultRepoGateway.swift
+//  DefaultAPIRepoGateway.swift
 //  GitHubSearchApp
 //
 //  Created by chmini on 2022/10/22.
@@ -8,11 +8,11 @@
 import Foundation
 import RxSwift
 
-protocol RepoGateWay {
+protocol APIRepoGateWay {
     func fetchRepoList(with searchRepoRequestDTO: SearchRepoRequestDTO) -> Observable<Result<SearchRepoResponseDTO, Error>>
 }
 
-struct DefaultRepoGateway: RepoGateWay {
+struct DefaultAPIRepoGateway: APIRepoGateWay {
     func fetchRepoList(with searchRepoRequestDTO: SearchRepoRequestDTO) -> Observable<Result<SearchRepoResponseDTO, Error>> {
         let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
         return ProviderImpl.shared.request(endpoint: endpoint)
