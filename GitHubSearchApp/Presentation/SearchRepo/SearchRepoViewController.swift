@@ -25,7 +25,8 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(SearchRepoTableViewCell.self, forCellReuseIdentifier: SearchRepoTableViewCell.cellId)
+        tableView.separatorInset = .zero
         return tableView
     }()
     
@@ -60,17 +61,25 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         let configureCell: (TableViewSectionedDataSource<MySection>,
                             UITableView,
                             IndexPath,
-                            Repository) -> UITableViewCell
+                            Repository) -> SearchRepoTableViewCell
         = { dataSource, tableView, indexPath, item in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            var content = cell.defaultContentConfiguration()
-            content.text = item.name
-            content.secondaryText = item.description
-            let image = UIImage(systemName: "star.fill")
-            cell.accessoryView = UIImageView(image: image)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchRepoTableViewCell.cellId,
+                                                           for: indexPath) as? SearchRepoTableViewCell
+            else {
+                return SearchRepoTableViewCell()
+            }
             
-            cell.contentConfiguration = content
-            cell.separatorInset = .zero
+            cell.bind(repository: item)
+            
+            cell.starButton.buttonAction = { isTap in
+                if isTap {
+                    print("tap, tap")
+                    print(item.name)
+                } else {
+                    print("not tap")
+                    print(item.name)
+                }
+            }
             
             return cell
         }

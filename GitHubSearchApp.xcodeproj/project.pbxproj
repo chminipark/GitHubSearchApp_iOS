@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		305A9B60FE0083A9C59565A1 /* Pods_GitHubSearchApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD114E3CA79FFBFE995E7EF7 /* Pods_GitHubSearchApp.framework */; };
+		BD00FC0329111D760099AFBD /* SearchRepoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD00FC0229111D760099AFBD /* SearchRepoTableViewCell.swift */; };
 		BD0A632A28F7DFE400C080A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A632928F7DFE400C080A5 /* AppDelegate.swift */; };
 		BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A632B28F7DFE400C080A5 /* SceneDelegate.swift */; };
 		BD0A633328F7DFE600C080A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD0A633228F7DFE600C080A5 /* Assets.xcassets */; };
@@ -34,6 +35,8 @@
 		BDC09ED028FD2E790024507F /* GitHubSearchAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09ECF28FD2E790024507F /* GitHubSearchAppTests.swift */; };
 		BDC09EFB28FD56CA0024507F /* SearchRepoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EFA28FD56CA0024507F /* SearchRepoResponseDTO.swift */; };
 		BDC09EFF28FD59C60024507F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EFE28FD59C60024507F /* Repository.swift */; };
+		BDC688BB2914119200D7758D /* RepoLabels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688BA2914119200D7758D /* RepoLabels.swift */; };
+		BDC688BD291411BF00D7758D /* StarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688BC291411BF00D7758D /* StarButton.swift */; };
 		F81208C461FC6660A2737111 /* Pods_GitHubSearchAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067BC383C3DCAF581F361FE8 /* Pods_GitHubSearchAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +56,7 @@
 		39E34C15EAAFA15B88E4D462 /* Pods-GitHubSearchAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearchAppTests.release.xcconfig"; path = "Target Support Files/Pods-GitHubSearchAppTests/Pods-GitHubSearchAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		48DEEDB577F67690C9B810AD /* Pods-GitHubSearchApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearchApp.release.xcconfig"; path = "Target Support Files/Pods-GitHubSearchApp/Pods-GitHubSearchApp.release.xcconfig"; sourceTree = "<group>"; };
 		B119DB6275908EC99F5DDDE2 /* Pods-GitHubSearchAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearchAppTests.debug.xcconfig"; path = "Target Support Files/Pods-GitHubSearchAppTests/Pods-GitHubSearchAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BD00FC0229111D760099AFBD /* SearchRepoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoTableViewCell.swift; sourceTree = "<group>"; };
 		BD0A632628F7DFE400C080A5 /* GitHubSearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubSearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0A632928F7DFE400C080A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD0A632B28F7DFE400C080A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +86,8 @@
 		BDC09ECF28FD2E790024507F /* GitHubSearchAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchAppTests.swift; sourceTree = "<group>"; };
 		BDC09EFA28FD56CA0024507F /* SearchRepoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoResponseDTO.swift; sourceTree = "<group>"; };
 		BDC09EFE28FD59C60024507F /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		BDC688BA2914119200D7758D /* RepoLabels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoLabels.swift; sourceTree = "<group>"; };
+		BDC688BC291411BF00D7758D /* StarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButton.swift; sourceTree = "<group>"; };
 		BDE6379028FD6FBE001EEB7B /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379228FD6FC8001EEB7B /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379428FD6FD0001EEB7B /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +176,7 @@
 			children = (
 				BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */,
 				BD2E243C28FFE7FE003513B0 /* SearchRepoViewModel.swift */,
+				BDC688B92914116500D7758D /* SearchRepoTableViewCell */,
 			);
 			path = SearchRepo;
 			sourceTree = "<group>";
@@ -322,6 +329,16 @@
 				BDC09EFE28FD59C60024507F /* Repository.swift */,
 			);
 			path = Entities;
+			sourceTree = "<group>";
+		};
+		BDC688B92914116500D7758D /* SearchRepoTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				BD00FC0229111D760099AFBD /* SearchRepoTableViewCell.swift */,
+				BDC688BA2914119200D7758D /* RepoLabels.swift */,
+				BDC688BC291411BF00D7758D /* StarButton.swift */,
+			);
+			path = SearchRepoTableViewCell;
 			sourceTree = "<group>";
 		};
 		DE27F3B76C10F7AD0449DD60 /* Frameworks */ = {
@@ -524,11 +541,13 @@
 				BD0A634228F7E32700C080A5 /* FavoriteRepoViewController.swift in Sources */,
 				BD33FB9528FEBB0D00F42776 /* APIEndpoints.swift in Sources */,
 				BD7A22C529027708006AFC5C /* MySection.swift in Sources */,
+				BD00FC0329111D760099AFBD /* SearchRepoTableViewCell.swift in Sources */,
 				BDC09EC228FD228C0024507F /* NetworkError.swift in Sources */,
 				BD7A22FC290403B7006AFC5C /* DefaultRepoGateway.swift in Sources */,
 				BDC09EFB28FD56CA0024507F /* SearchRepoResponseDTO.swift in Sources */,
 				BD7A230229066EF1006AFC5C /* URLSessionable.swift in Sources */,
 				BDC09EC028FD20AD0024507F /* Requestable.swift in Sources */,
+				BDC688BD291411BF00D7758D /* StarButton.swift in Sources */,
 				BD0A633E28F7E25E00C080A5 /* TabBarController.swift in Sources */,
 				BDC09EC628FD273B0024507F /* Provider.swift in Sources */,
 				BD0A632A28F7DFE400C080A5 /* AppDelegate.swift in Sources */,
@@ -538,6 +557,7 @@
 				BDC09EBE28FCDA950024507F /* Endpoint.swift in Sources */,
 				BD0A634028F7E2D500C080A5 /* SearchRepoViewController.swift in Sources */,
 				BDC09EC828FD280C0024507F /* Responsable.swift in Sources */,
+				BDC688BB2914119200D7758D /* RepoLabels.swift in Sources */,
 				BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */,
 				BD2E244229000FD9003513B0 /* Property.swift in Sources */,
 				BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */,
