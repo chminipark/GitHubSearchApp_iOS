@@ -37,6 +37,7 @@
 		BDC09EFF28FD59C60024507F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC09EFE28FD59C60024507F /* Repository.swift */; };
 		BDC688BB2914119200D7758D /* RepoLabels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688BA2914119200D7758D /* RepoLabels.swift */; };
 		BDC688BD291411BF00D7758D /* StarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688BC291411BF00D7758D /* StarButton.swift */; };
+		BDC688C12914F6D300D7758D /* RepoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BDC688BF2914F6D300D7758D /* RepoModel.xcdatamodeld */; };
 		F81208C461FC6660A2737111 /* Pods_GitHubSearchAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067BC383C3DCAF581F361FE8 /* Pods_GitHubSearchAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +89,7 @@
 		BDC09EFE28FD59C60024507F /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		BDC688BA2914119200D7758D /* RepoLabels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoLabels.swift; sourceTree = "<group>"; };
 		BDC688BC291411BF00D7758D /* StarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButton.swift; sourceTree = "<group>"; };
+		BDC688C02914F6D300D7758D /* RepoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RepoModel.xcdatamodel; sourceTree = "<group>"; };
 		BDE6379028FD6FBE001EEB7B /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379228FD6FC8001EEB7B /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379428FD6FD0001EEB7B /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -290,6 +292,7 @@
 		BDC09EF728FD569D0024507F /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				BDC688BE2914F64300D7758D /* CoreData */,
 				BD7A22FA29040398006AFC5C /* Gateways */,
 				BDC09EF828FD56A10024507F /* Network */,
 			);
@@ -339,6 +342,14 @@
 				BDC688BC291411BF00D7758D /* StarButton.swift */,
 			);
 			path = SearchRepoTableViewCell;
+			sourceTree = "<group>";
+		};
+		BDC688BE2914F64300D7758D /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				BDC688BF2914F6D300D7758D /* RepoModel.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		DE27F3B76C10F7AD0449DD60 /* Frameworks */ = {
@@ -562,6 +573,7 @@
 				BD2E244229000FD9003513B0 /* Property.swift in Sources */,
 				BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */,
 				BD7A230429067298006AFC5C /* ViewModelType.swift in Sources */,
+				BDC688C12914F6D300D7758D /* RepoModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,6 +854,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		BDC688BF2914F6D300D7758D /* RepoModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BDC688C02914F6D300D7758D /* RepoModel.xcdatamodel */,
+			);
+			currentVersion = BDC688C02914F6D300D7758D /* RepoModel.xcdatamodel */;
+			path = RepoModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BD0A631E28F7DFE400C080A5 /* Project object */;
 }
