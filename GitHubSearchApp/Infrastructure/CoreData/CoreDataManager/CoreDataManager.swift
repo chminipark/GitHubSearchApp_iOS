@@ -80,7 +80,7 @@ class CoreDataManager {
 //        }
 //    }
     
-    func saveRepo(_ repo: Repository) -> Observable<Result<Bool, CoreDataError>> {
+    func saveRepo(_ repo: Repository) -> Observable<Result<Void, CoreDataError>> {
         Observable.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
@@ -98,14 +98,15 @@ class CoreDataManager {
                     
                     `self`.contextSave { result in
                         switch result {
-                        case .success(let isSuccess):
-                            emitter.onNext(.success(isSuccess))
+                        case .success:
+                            emitter.onNext(.success(()))
                         case .failure(let error):
                             emitter.onNext(.failure(error))
                         }
                     }
                 }
             }
+            
             return Disposables.create()
         }
     }
@@ -129,7 +130,7 @@ class CoreDataManager {
 //        }
 //    }
     
-    func deleteRepo(id: UUID) -> Observable<Result<Bool, CoreDataError>> {
+    func deleteRepo(id: UUID) -> Observable<Result<Void, CoreDataError>> {
         Observable.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
@@ -141,7 +142,7 @@ class CoreDataManager {
                 if let results = try `self`.context?.fetch(fetchRequest) as? [RepoModel] {
                     if results.count != 0 {
                         `self`.context?.delete(results[0])
-                        emitter.onNext(.success(true))
+                        emitter.onNext(.success(()))
                     }
                 }
             } catch {
@@ -160,10 +161,10 @@ extension CoreDataManager {
         return fetchRequest
     }
     
-    fileprivate func contextSave(completion: ((Result<Bool, CoreDataError>) -> Void)) {
+    fileprivate func contextSave(completion: ((Result<Void, CoreDataError>) -> Void)) {
         do {
             try context?.save()
-            completion(.success(true))
+            completion(.success(()))
         } catch {
             completion(.failure(.saveError(error)))
         }
