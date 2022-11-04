@@ -31,7 +31,7 @@ class SearchRepoTableViewCell: UITableViewCell {
             containerView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: padding),
             containerView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -padding),
             containerView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: padding*2),
-            containerView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -(padding))
+            containerView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -(padding*2))
         ])
         
         containerView.addSubview(repoLabels)
@@ -40,13 +40,13 @@ class SearchRepoTableViewCell: UITableViewCell {
             repoLabels.topAnchor.constraint(equalTo: containerView.topAnchor),
             repoLabels.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             repoLabels.leftAnchor.constraint(equalTo: containerView.leftAnchor),
-            repoLabels.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.8)
+            repoLabels.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.85)
         ])
         
         containerView.addSubview(starButton)
         starButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            starButton.leftAnchor.constraint(equalTo: repoLabels.rightAnchor),
+            starButton.leftAnchor.constraint(equalTo: repoLabels.rightAnchor, constant: 3),
             starButton.rightAnchor.constraint(equalTo: containerView.rightAnchor),
             starButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
         ])

@@ -8,8 +8,18 @@
 import UIKit
 
 class StarButton: UIView {
-//    let starImage = UIImage(systemName: "star")
-//    let starFillImage = UIImage(systemName: "star.fill")
+    let starImage = UIImage(systemName: "star")!
+    let starFillImage = UIImage(systemName: "star.fill")!
+    
+    var image: UIImage {
+        isTap ? starFillImage : starImage
+    }
+    
+    var isTap: Bool = false {
+        didSet {
+            starButton.setImage(image, for: .normal)
+        }
+    }
     
     let starButton: UIButton = {
         let starImage = UIImage(systemName: "star")
@@ -30,6 +40,12 @@ class StarButton: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
+        
+        starButton.addTarget(self, action: #selector(touchUpInside), for: .touchUpInside)
+    }
+    
+    @objc func touchUpInside() {
+        isTap = !isTap
     }
     
     required init?(coder: NSCoder) {
