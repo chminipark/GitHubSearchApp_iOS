@@ -96,8 +96,8 @@
 		BDC688C02914F6D300D7758D /* RepoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RepoModel.xcdatamodel; sourceTree = "<group>"; };
 		BDC688CA2914FDE000D7758D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		BDC688CC2915166800D7758D /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
-		BDC688CF291523D400D7758D /* RepoModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepoModel+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		BDC688D0291523D400D7758D /* RepoModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepoModel+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		BDC688CF291523D400D7758D /* RepoModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RepoModel+CoreDataClass.swift"; path = "GitHubSearchApp/Data/CoreData/DataMapping/RepoModel+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		BDC688D0291523D400D7758D /* RepoModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RepoModel+CoreDataProperties.swift"; path = "GitHubSearchApp/Data/CoreData/DataMapping/RepoModel+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		BDE6379028FD6FBE001EEB7B /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379228FD6FC8001EEB7B /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379428FD6FD0001EEB7B /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -251,9 +251,8 @@
 		BDC09EBB28FCDA790024507F /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				BD33FB9228FEBABA00F42776 /* Common */,
-				BDC09EC428FD27340024507F /* Provider */,
-				BDC09EBC28FCDA890024507F /* Endpoint */,
+				BDC688D72915285C00D7758D /* CoreData */,
+				BDC688D62915284600D7758D /* Network */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -300,9 +299,8 @@
 		BDC09EF728FD569D0024507F /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				BDC688CE2915166F00D7758D /* CoreDataManager */,
-				BDC688BE2914F64300D7758D /* CoreData */,
 				BD7A22FA29040398006AFC5C /* Gateways */,
+				BDC688BE2914F64300D7758D /* CoreData */,
 				BDC09EF828FD56A10024507F /* Network */,
 			);
 			path = Data;
@@ -356,8 +354,7 @@
 		BDC688BE2914F64300D7758D /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				BDC688CF291523D400D7758D /* RepoModel+CoreDataClass.swift */,
-				BDC688D0291523D400D7758D /* RepoModel+CoreDataProperties.swift */,
+				BDC688D52915282100D7758D /* DataMapping */,
 				BDC688BF2914F6D300D7758D /* RepoModel.xcdatamodeld */,
 			);
 			path = CoreData;
@@ -366,10 +363,45 @@
 		BDC688CE2915166F00D7758D /* CoreDataManager */ = {
 			isa = PBXGroup;
 			children = (
-				BDC688CC2915166800D7758D /* CoreDataError.swift */,
 				BDC688CA2914FDE000D7758D /* CoreDataManager.swift */,
 			);
 			path = CoreDataManager;
+			sourceTree = "<group>";
+		};
+		BDC688D52915282100D7758D /* DataMapping */ = {
+			isa = PBXGroup;
+			children = (
+				BDC688CF291523D400D7758D /* RepoModel+CoreDataClass.swift */,
+				BDC688D0291523D400D7758D /* RepoModel+CoreDataProperties.swift */,
+			);
+			path = DataMapping;
+			sourceTree = "<group>";
+		};
+		BDC688D62915284600D7758D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				BDC09EBC28FCDA890024507F /* Endpoint */,
+				BDC09EC428FD27340024507F /* Provider */,
+				BD33FB9228FEBABA00F42776 /* Common */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		BDC688D72915285C00D7758D /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				BDC688CE2915166F00D7758D /* CoreDataManager */,
+				BDC688D82915286400D7758D /* Common */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		BDC688D82915286400D7758D /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				BDC688CC2915166800D7758D /* CoreDataError.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		DE27F3B76C10F7AD0449DD60 /* Frameworks */ = {
