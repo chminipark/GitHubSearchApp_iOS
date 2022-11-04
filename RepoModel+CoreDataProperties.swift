@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 
 extension RepoModel {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<RepoModel> {
         return NSFetchRequest<RepoModel>(entityName: "RepoModel")
     }
@@ -20,9 +19,6 @@ extension RepoModel {
     @NSManaged public var repoDescription: String?
     @NSManaged public var name: String?
     @NSManaged public var id: UUID?
-
 }
 
-extension RepoModel : Identifiable {
-
-}
+extension RepoModel : Identifiable {}
