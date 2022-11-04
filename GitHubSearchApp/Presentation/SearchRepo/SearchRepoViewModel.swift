@@ -41,7 +41,7 @@ class SearchRepoViewModel {
     let alertRequestLimit = PublishSubject<Void>()
     
     init() {
-        let repoGateWay = DefaultRepoGateway()
+        let repoGateWay = DefaultAPIRepoGateway()
         self.repoUseCase = DefaultRepoUseCase(repoGateWay: repoGateWay)
     }
 }

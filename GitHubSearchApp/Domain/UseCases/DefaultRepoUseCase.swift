@@ -13,10 +13,10 @@ protocol RepoUseCase {
 }
 
 class DefaultRepoUseCase: RepoUseCase {
-    let repoGateWay: RepoGateWay
+    let repoGateWay: APIRepoGateWay
     var mySection = MySection(headerTitle: "mySection", items: [])
     
-    init (repoGateWay: RepoGateWay) {
+    init (repoGateWay: APIRepoGateWay) {
         self.repoGateWay = repoGateWay
     }
     
