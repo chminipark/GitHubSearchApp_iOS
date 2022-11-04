@@ -44,8 +44,13 @@ class StarButton: UIView {
         starButton.addTarget(self, action: #selector(touchUpInside), for: .touchUpInside)
     }
     
+    var buttonAction: ((Bool) -> ())?
+    
     @objc func touchUpInside() {
         isTap = !isTap
+        if let buttonAction = buttonAction {
+            buttonAction(isTap)
+        }
     }
     
     required init?(coder: NSCoder) {

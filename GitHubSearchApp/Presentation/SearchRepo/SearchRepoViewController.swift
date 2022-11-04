@@ -70,6 +70,17 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             }
             
             cell.bind(repository: item)
+            
+            cell.starButton.buttonAction = { isTap in
+                if isTap {
+                    print("tap, tap")
+                    print(item.name)
+                } else {
+                    print("not tap")
+                    print(item.name)
+                }
+            }
+            
             return cell
         }
         self.dataSource = .init(configureCell: configureCell)
