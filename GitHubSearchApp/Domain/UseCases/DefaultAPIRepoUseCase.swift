@@ -8,11 +8,11 @@
 import Foundation
 import RxSwift
 
-protocol RepoUseCase {
+protocol APIRepoUseCase {
     func getRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>>
 }
 
-class DefaultRepoUseCase: RepoUseCase {
+class DefaultAPIRepoUseCase: APIRepoUseCase {
     let repoGateWay: APIRepoGateWay
     var mySection = MySection(headerTitle: "mySection", items: [])
     

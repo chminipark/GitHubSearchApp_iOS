@@ -16,7 +16,7 @@ enum ViewState {
 }
 
 class SearchRepoViewModel {
-    let repoUseCase: RepoUseCase
+    let repoUseCase: APIRepoUseCase
     
     var searchText: String = ""
     var currentPage: Int = 1
@@ -42,7 +42,7 @@ class SearchRepoViewModel {
     
     init() {
         let repoGateWay = DefaultAPIRepoGateway()
-        self.repoUseCase = DefaultRepoUseCase(repoGateWay: repoGateWay)
+        self.repoUseCase = DefaultAPIRepoUseCase(repoGateWay: repoGateWay)
     }
 }
 
