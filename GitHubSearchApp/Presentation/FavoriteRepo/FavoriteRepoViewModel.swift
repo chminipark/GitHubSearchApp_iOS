@@ -11,7 +11,7 @@ import RxSwift
 class FavoriteRepoViewModel {
     let coreDataRepoUseCase: DefaultCoreDataRepoUseCase
     
-    let fetchRequest = PublishSubject<Void>()
+    static let fetchRequest = PublishSubject<Void>()
     
     init() {
         let coreDataRepoGateway = DefaultCoreDataRepoGateway()
@@ -30,7 +30,8 @@ extension FavoriteRepoViewModel: ViewModelType {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        fetchRequest
+        FavoriteRepoViewModel
+            .fetchRequest
             .withUnretained(self)
             .flatMap { (owner, _) -> Observable<Result<[MySection], CoreDataError>> in
                 return owner.coreDataRepoUseCase.getFavoriteRepoList()

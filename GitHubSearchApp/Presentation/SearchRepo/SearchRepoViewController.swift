@@ -11,6 +11,10 @@ import RxCocoa
 import RxDataSources
 import SafariServices
 
+/*
+ 즐겨찾기탭에서 저장, 삭제할때마다 starButton fill 연동
+ */
+
 final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!

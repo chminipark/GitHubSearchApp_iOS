@@ -10,6 +10,12 @@ import RxSwift
 import RxDataSources
 import SafariServices
 
+/*
+ - [x] 기본 스타버튼 : fill
+ - [ ] 추가 삭제시 테이블뷰 리로드 x
+ - [ ] 테이블뷰 당길때 리로드
+ */
+
 class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
@@ -22,10 +28,6 @@ class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIView
         return tableView
     }()
     
-    override func viewWillAppear(_ animated: Bool) {
-        favoriteRepoViewModel.fetchRequest.onNext(())
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -33,6 +35,8 @@ class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIView
         configureUI()
         setupTableView()
         bindToViewModel()
+        
+        FavoriteRepoViewModel.fetchRequest.onNext(())
     }
     
     func configureUI() {
@@ -62,6 +66,7 @@ class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIView
             }
             
             cell.bind(repository: item, delegate: self, disposeBag: `self`.disposeBag)
+            cell.starButton.isTap = true
             
             return cell
         }
