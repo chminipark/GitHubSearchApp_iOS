@@ -11,10 +11,10 @@ import RxCocoa
 import RxDataSources
 import SafariServices
 
-final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
+final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
-    let viewModel = SearchRepoViewModel()
+    let searchRepoViewModel = SearchRepoViewModel()
     
     private let searchBar: UISearchController = {
         let sb = UISearchController()
@@ -25,7 +25,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(SearchRepoTableViewCell.self, forCellReuseIdentifier: SearchRepoTableViewCell.cellId)
+        tableView.register(RepoTableViewCell.self, forCellReuseIdentifier: RepoTableViewCell.cellId)
         tableView.separatorInset = .zero
         return tableView
     }()
@@ -61,12 +61,12 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         let configureCell: (TableViewSectionedDataSource<MySection>,
                             UITableView,
                             IndexPath,
-                            Repository) -> SearchRepoTableViewCell
+                            Repository) -> RepoTableViewCell
         = { dataSource, tableView, indexPath, item in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchRepoTableViewCell.cellId,
-                                                           for: indexPath) as? SearchRepoTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RepoTableViewCell.cellId,
+                                                           for: indexPath) as? RepoTableViewCell
             else {
-                return SearchRepoTableViewCell()
+                return RepoTableViewCell()
             }
             
             cell.bind(repository: item)
@@ -97,7 +97,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         let searchBarText = searchBar.searchBar.rx.text.orEmpty.asObservable()
         
         let input = SearchRepoViewModel.Input(searchBarText: searchBarText)
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        let output = searchRepoViewModel.transform(input: input, disposeBag: disposeBag)
         
         output.$searchBarText
             .subscribe(onNext: { text in
@@ -109,7 +109,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        viewModel.alertRequestLimit
+        searchRepoViewModel.alertRequestLimit
             .subscribe(with: self, onNext: { (owner, _) in
                 owner.showRequestLimitAlert()
             })
@@ -143,8 +143,6 @@ extension SearchRepoViewController: UITableViewDelegate {
     }
 }
 
-extension SearchRepoViewController: UIViewControllerTransitioningDelegate {}
-
 extension SearchRepoViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let totalHeight = scrollView.contentSize.height
@@ -152,8 +150,8 @@ extension SearchRepoViewController {
         let currentYOffset = scrollView.contentOffset.y
         let remainFromBottom = totalHeight - currentYOffset
         
-        if remainFromBottom < frameHeight * 2 && viewModel.viewState == .idle {
-            viewModel.pagination.onNext(())
+        if remainFromBottom < frameHeight * 2 && searchRepoViewModel.viewState == .idle {
+            searchRepoViewModel.pagination.onNext(())
         }
     }
 }

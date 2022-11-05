@@ -1,5 +1,5 @@
 //
-//  SearchRepoTableViewCell.swift
+//  RepoTableViewCell.swift
 //  GitHubSearchApp
 //
 //  Created by chmini on 2022/11/01.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class SearchRepoTableViewCell: UITableViewCell {
-    static let cellId = String(describing: SearchRepoTableViewCell.self)
+class RepoTableViewCell: UITableViewCell {
+    static let cellId = String(describing: RepoTableViewCell.self)
     let padding: CGFloat = 10
     
     let containerView = UIView()

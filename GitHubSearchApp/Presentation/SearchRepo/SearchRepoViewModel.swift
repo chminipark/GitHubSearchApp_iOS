@@ -16,7 +16,7 @@ enum ViewState {
 }
 
 class SearchRepoViewModel {
-    let repoUseCase: APIRepoUseCase
+    let apiRepoUseCase: APIRepoUseCase
     
     var searchText: String = ""
     var currentPage: Int = 1
@@ -42,7 +42,7 @@ class SearchRepoViewModel {
     
     init() {
         let apiRepoGateway = DefaultAPIRepoGateway()
-        self.repoUseCase = DefaultAPIRepoUseCase(apiRepoGateway: apiRepoGateway)
+        self.apiRepoUseCase = DefaultAPIRepoUseCase(apiRepoGateway: apiRepoGateway)
     }
 }
 
@@ -56,7 +56,7 @@ extension SearchRepoViewModel: ViewModelType {
         @Property var searchBarText = ""
     }
     
-    func transform(input: Input, disposeBag: DisposeBag) -> Output  {
+    func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
         let searchTextWithDebounce = input.searchBarText
@@ -77,7 +77,7 @@ extension SearchRepoViewModel: ViewModelType {
             .withUnretained(self)
             .flatMap { (owner, text) -> Observable<Result<[MySection], NetworkError>> in
                 owner.setFirstFetching(with: text)
-                return owner.repoUseCase.getSearchRepoList(searchText: text, currentPage: 1, originData: nil)
+                return owner.apiRepoUseCase.getSearchRepoList(searchText: text, currentPage: 1, originData: nil)
             }
             .withUnretained(self)
             .map { (owner, result) -> [MySection] in
@@ -105,7 +105,7 @@ extension SearchRepoViewModel: ViewModelType {
             }
             .flatMap { (owner, originData) -> Observable<Result<[MySection], NetworkError>> in
                 owner.setPaginationFetching()
-                return owner.repoUseCase.getSearchRepoList(searchText: owner.searchText,
+                return owner.apiRepoUseCase.getSearchRepoList(searchText: owner.searchText,
                                                      currentPage: owner.currentPage,
                                                      originData: originData!)
             }
