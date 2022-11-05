@@ -62,24 +62,15 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UI
                             UITableView,
                             IndexPath,
                             Repository) -> RepoTableViewCell
-        = { dataSource, tableView, indexPath, item in
+        = { [weak self] dataSource, tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RepoTableViewCell.cellId,
-                                                           for: indexPath) as? RepoTableViewCell
+                                                           for: indexPath) as? RepoTableViewCell,
+                  let `self` = self
             else {
                 return RepoTableViewCell()
             }
-            
-            cell.bind(repository: item)
-            
-            cell.starButton.buttonAction = { isTap in
-                if isTap {
-                    print("tap, tap")
-                    print(item.name)
-                } else {
-                    print("not tap")
-                    print(item.name)
-                }
-            }
+
+            cell.bind(repository: item, delegate: self, disposeBag: `self`.disposeBag)
             
             return cell
         }

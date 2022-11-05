@@ -6,10 +6,15 @@
 //
 
 import UIKit
+import RxSwift
 
 class StarButton: UIView {
     let starImage = UIImage(systemName: "star")!
     let starFillImage = UIImage(systemName: "star.fill")!
+    
+    var delegate: UIViewController?
+    var repository: Repository?
+    var disposeBag: DisposeBag?
     
     var image: UIImage {
         isTap ? starFillImage : starImage
@@ -40,17 +45,20 @@ class StarButton: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
-        
         starButton.addTarget(self, action: #selector(touchUpInside), for: .touchUpInside)
     }
     
-    var buttonAction: ((Bool) -> ())?
-    
     @objc func touchUpInside() {
         isTap = !isTap
-        if let buttonAction = buttonAction {
-            buttonAction(isTap)
+        guard let repository = repository,
+              let delegate = delegate,
+              let disposeBag = disposeBag
+        else {
+            print("😡😡😡😡😡 starButton init fail...")
+            return
         }
+
+        buttonAction(buttonState: isTap, repository: repository, delegate: delegate, disposeBag: disposeBag)
     }
     
     required init?(coder: NSCoder) {
@@ -77,7 +85,38 @@ class StarButton: UIView {
         ])
     }
     
-    func configureView(repository: Repository) {
+    func configureView(repository: Repository, delegate: UIViewController, disposeBag: DisposeBag) {
         self.starCountLabel.text = String(repository.starCount)
+        self.repository = repository
+        self.delegate = delegate
+        self.disposeBag = disposeBag
+    }
+}
+
+extension StarButton {
+    func buttonAction(buttonState: Bool, repository: Repository, delegate: UIViewController , disposeBag: DisposeBag) {
+        if buttonState {
+            CoreDataManager.shared.saveRepo(repository)
+                .subscribe(onNext: { result in
+                    switch result {
+                    case .success:
+                        print("CoreDataManager.shared.saveRepo(repo) Success 😘")
+                    case .failure(let error):
+                        print(error.description)
+                    }
+                })
+                .disposed(by: disposeBag)
+        } else {
+            CoreDataManager.shared.deleteRepo(id: repository.id)
+                .subscribe(onNext: { result in
+                    switch result {
+                    case .success:
+                        print("CoreDataManager.shared.deleteRepo(id: repo.id) Success 😘")
+                    case .failure(let error):
+                        print(error.description)
+                    }
+                })
+                .disposed(by: disposeBag)
+        }
     }
 }

@@ -175,3 +175,31 @@ extension SearchRepoViewModel {
         }
     }
 }
+
+extension SearchRepoViewModel {
+    func buttonAction(buttonState: Bool, repo: Repository, disposeBag: DisposeBag) {
+        if buttonState {
+            CoreDataManager.shared.saveRepo(repo)
+                .subscribe(onNext: { result in
+                    switch result {
+                    case .success:
+                        print("CoreDataManager.shared.saveRepo(repo) Success 😘")
+                    case .failure(let error):
+                        print(error.description)
+                    }
+                })
+                .disposed(by: disposeBag)
+        } else {
+            CoreDataManager.shared.deleteRepo(id: repo.id)
+                .subscribe(onNext: { result in
+                    switch result {
+                    case .success:
+                        print("CoreDataManager.shared.deleteRepo(id: repo.id) Success 😘")
+                    case .failure(let error):
+                        print(error.description)
+                    }
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+}

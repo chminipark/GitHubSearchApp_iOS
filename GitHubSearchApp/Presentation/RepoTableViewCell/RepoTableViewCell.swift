@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class RepoTableViewCell: UITableViewCell {
     static let cellId = String(describing: RepoTableViewCell.self)
@@ -52,8 +53,8 @@ class RepoTableViewCell: UITableViewCell {
         ])
     }
     
-    func bind(repository: Repository) {
+    func bind(repository: Repository, delegate: UIViewController, disposeBag: DisposeBag) {
         self.repoLabels.configureView(repository: repository)
-        self.starButton.configureView(repository: repository)
+        self.starButton.configureView(repository: repository, delegate: delegate, disposeBag: disposeBag)
     }
 }
