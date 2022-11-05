@@ -17,25 +17,6 @@ class CoreDataManager {
     
     let modelName: String = "RepoModel"
     
-//    func getRepos(ascending: Bool = false) -> [RepoModel] {
-//        var models: [RepoModel] = [RepoModel]()
-//
-//        if let context = context {
-//            let starCountSort = NSSortDescriptor(key: "starCount", ascending: ascending)
-//            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: modelName)
-//            fetchRequest.sortDescriptors = [starCountSort]
-//
-//            do {
-//                if let fetchResult = try context.fetch(fetchRequest) as? [RepoModel] {
-//                    models = fetchResult
-//                }
-//            } catch let error as NSError {
-//                print("Could not fetch🥺: \(error), \(error.userInfo)")
-//            }
-//        }
-//        return models
-//    }
-    
     func fetchRepos(ascending: Bool = false) -> Observable<Result<[RepoModel], CoreDataError>> {
         Observable.create { [weak self] emitter in
             guard let `self` = self else {
@@ -59,26 +40,6 @@ class CoreDataManager {
             return Disposables.create()
         }
     }
-    
-//    func saveRepo(_ repo: Repository,
-//                  onSuccess: @escaping ((Bool) -> Void)) {
-//        if let context = context,
-//            let entity = NSEntityDescription.entity(forEntityName: modelName, in: context) {
-//
-//            if let repoModel = NSManagedObject(entity: entity, insertInto: context) as? RepoModel {
-//
-//                repoModel.id = repo.id
-//                repoModel.name = repo.name
-//                repoModel.repoDescription = repo.description
-//                repoModel.starCount = Int16(repo.starCount)
-//                repoModel.urlString = repo.urlString
-//
-//                contextSave { success in
-//                    onSuccess(success)
-//                }
-//            }
-//        }
-//    }
     
     func saveRepo(_ repo: Repository) -> Observable<Result<Void, CoreDataError>> {
         Observable.create { [weak self] emitter in
@@ -110,25 +71,6 @@ class CoreDataManager {
             return Disposables.create()
         }
     }
-    
-//    func deleteRepo(id: UUID, onSuccess: @escaping ((Bool) -> Void)) {
-//        let fetchRequest = filteredRequest(id: id)
-//
-//        do {
-//            if let results = try context?.fetch(fetchRequest) as? [RepoModel] {
-//                if results.count != 0 {
-//                    context?.delete(results[0])
-//                }
-//            }
-//        } catch let error as NSError {
-//            print("Could not fatch🥺: \(error), \(error.userInfo)")
-//            onSuccess(false)
-//        }
-//
-//        contextSave { success in
-//            onSuccess(success)
-//        }
-//    }
     
     func deleteRepo(id: UUID) -> Observable<Result<Void, CoreDataError>> {
         Observable.create { [weak self] emitter in
@@ -169,14 +111,4 @@ extension CoreDataManager {
             completion(.failure(.saveError(error)))
         }
     }
-    
-//    fileprivate func contextSave(onSuccess: ((Bool) -> Void)) {
-//        do {
-//            try context?.save()
-//            onSuccess(true)
-//        } catch let error as NSError {
-//            print("Could not save🥶: \(error), \(error.userInfo)")
-//            onSuccess(false)
-//        }
-//    }
 }

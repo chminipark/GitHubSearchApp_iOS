@@ -44,6 +44,7 @@
 		BDC688D2291523D400D7758D /* RepoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688D0291523D400D7758D /* RepoModel+CoreDataProperties.swift */; };
 		BDC688DA29152F3000D7758D /* DefaultCoreDataRepoGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688D929152F3000D7758D /* DefaultCoreDataRepoGateway.swift */; };
 		BDC688DC2915356800D7758D /* DefaultCoreDataRepoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688DB2915356800D7758D /* DefaultCoreDataRepoUseCase.swift */; };
+		BDC688DE2916423900D7758D /* FavoriteRepoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC688DD2916423900D7758D /* FavoriteRepoViewModel.swift */; };
 		F81208C461FC6660A2737111 /* Pods_GitHubSearchAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067BC383C3DCAF581F361FE8 /* Pods_GitHubSearchAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +103,7 @@
 		BDC688D0291523D400D7758D /* RepoModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RepoModel+CoreDataProperties.swift"; path = "GitHubSearchApp/Data/CoreData/DataMapping/RepoModel+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		BDC688D929152F3000D7758D /* DefaultCoreDataRepoGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCoreDataRepoGateway.swift; sourceTree = "<group>"; };
 		BDC688DB2915356800D7758D /* DefaultCoreDataRepoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCoreDataRepoUseCase.swift; sourceTree = "<group>"; };
+		BDC688DD2916423900D7758D /* FavoriteRepoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepoViewModel.swift; sourceTree = "<group>"; };
 		BDE6379028FD6FBE001EEB7B /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379228FD6FC8001EEB7B /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE6379428FD6FD0001EEB7B /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				BD0A634128F7E32700C080A5 /* FavoriteRepoViewController.swift */,
+				BDC688DD2916423900D7758D /* FavoriteRepoViewModel.swift */,
 			);
 			path = FavoriteRepo;
 			sourceTree = "<group>";
@@ -631,6 +634,7 @@
 				BD0A634028F7E2D500C080A5 /* SearchRepoViewController.swift in Sources */,
 				BDC688D1291523D400D7758D /* RepoModel+CoreDataClass.swift in Sources */,
 				BDC09EC828FD280C0024507F /* Responsable.swift in Sources */,
+				BDC688DE2916423900D7758D /* FavoriteRepoViewModel.swift in Sources */,
 				BDC688BB2914119200D7758D /* RepoLabels.swift in Sources */,
 				BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */,
 				BD2E244229000FD9003513B0 /* Property.swift in Sources */,
