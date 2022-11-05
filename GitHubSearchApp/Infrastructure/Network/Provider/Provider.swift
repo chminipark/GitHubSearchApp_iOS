@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 protocol Provider {
-    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Observable<Result<R, Error>> where E.Response == R
+    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Observable<Result<R, NetworkError>> where E.Response == R
 }
 
 class ProviderImpl: Provider {
@@ -19,9 +19,8 @@ class ProviderImpl: Provider {
     init(session: URLSessionable) {
         self.session = session
     }
-
-    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Observable<Result<R, Error>> where E.Response == R {
-        
+    
+    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Observable<Result<R, NetworkError>> where E.Response == R {
         return Observable.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
@@ -46,24 +45,24 @@ class ProviderImpl: Provider {
                     }
                 }.resume()
             } catch {
-                emitter.onNext(.failure(error))
+                emitter.onNext(.failure(.urlReqeustError(error as! URLRequestError)))
             }
-
+            
             return Disposables.create()
         }
     }
-
-    func checkError(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<Data, Error>) -> Void) {
+    
+    func checkError(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         if let error = error {
             completion(.failure(NetworkError.responseError(error)))
             return
         }
-
+        
         guard let response = response as? HTTPURLResponse else {
             completion(.failure(NetworkError.unknownError))
             return
         }
-
+        
         if response.statusCode != 200 {
             if response.statusCode == 403 {
                 completion(.failure(NetworkError.requestLimitError))
@@ -76,7 +75,7 @@ class ProviderImpl: Provider {
             completion(.failure(NetworkError.noDataError))
             return
         }
-
+        
         completion(.success(data))
     }
 }

@@ -75,13 +75,13 @@ extension SearchRepoViewModel: ViewModelType {
         
         searchTextWithDebounce
             .withUnretained(self)
-            .flatMap { (owner, text) -> Observable<Result<[MySection], Error>> in
+            .flatMap { (owner, text) -> Observable<Result<[MySection], NetworkError>> in
                 owner.setFirstFetching(with: text)
                 return owner.repoUseCase.getSearchRepoList(searchText: text, currentPage: 1, originData: nil)
             }
             .withUnretained(self)
             .map { (owner, result) -> [MySection] in
-                return owner.checkResult(result)
+                return owner.checkAPIResult(result)
             }
             .withUnretained(self)
             .filter { (owner, _) -> Bool in
@@ -103,7 +103,7 @@ extension SearchRepoViewModel: ViewModelType {
             .filter { (owner, repoList) -> Bool in
                 owner.checkPagination(with: repoList)
             }
-            .flatMap { (owner, originData) -> Observable<Result<[MySection], Error>> in
+            .flatMap { (owner, originData) -> Observable<Result<[MySection], NetworkError>> in
                 owner.setPaginationFetching()
                 return owner.repoUseCase.getSearchRepoList(searchText: owner.searchText,
                                                      currentPage: owner.currentPage,
@@ -111,7 +111,7 @@ extension SearchRepoViewModel: ViewModelType {
             }
             .withUnretained(self)
             .map { (owner, result) -> [MySection] in
-                return owner.checkResult(result)
+                return owner.checkAPIResult(result)
             }
             .withUnretained(self)
             .filter { (owner, _) -> Bool in
@@ -160,22 +160,16 @@ extension SearchRepoViewModel {
         }
     }
     
-    func checkResult(_ result: Result<[MySection], Error>) -> [MySection] {
+    func checkAPIResult(_ result: Result<[MySection], NetworkError>) -> [MySection] {
         switch result {
         case .success(let mySection):
             return mySection
         case .failure(let error):
-            guard let error = error as? NetworkError else {
-                print(error.localizedDescription)
-                return []
-            }
-            
             if error == .requestLimitError {
                 viewState = .requestLimit
                 currentPage -= 1
                 return []
             }
-            
             print(error.description)
             return []
         }

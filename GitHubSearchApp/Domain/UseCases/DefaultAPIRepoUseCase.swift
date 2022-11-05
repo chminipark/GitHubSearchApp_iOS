@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 protocol APIRepoUseCase {
-    func getSearchRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>>
+    func getSearchRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], NetworkError>>
 }
 
 class DefaultAPIRepoUseCase: APIRepoUseCase {
@@ -20,12 +20,12 @@ class DefaultAPIRepoUseCase: APIRepoUseCase {
         self.apiRepoGateway = apiRepoGateway
     }
     
-    func getSearchRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>> {
+    func getSearchRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], NetworkError>> {
         return apiRepoGateway
             .fetchRepoList(with: SearchRepoRequestDTO(searchText: searchText,
                                                       currentPage: currentPage))
             .withUnretained(self)
-            .map { (owner, data) -> Result<[MySection], Error> in
+            .map { (owner, data) -> Result<[MySection], NetworkError> in
                 switch data {
                 case .success(let dto):
                     owner.mySection.items = (originData ?? []) + dto.toDomain()
