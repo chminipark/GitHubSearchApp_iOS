@@ -16,12 +16,12 @@ protocol Requestable {
 extension Requestable {
     func makeURLRequest() throws -> URLRequest {
         guard var urlComponent = URLComponents(string: baseURL) else {
-            throw NetworkError.urlComponentError
+            throw URLRequestError.urlComponentError
         }
         urlComponent.path = path
         
         guard let queryDictionary = try? queryParameter.toDictionary() else {
-            throw NetworkError.queryEncodingError
+            throw URLRequestError.queryEncodingError
         }
         
         var queryItemList = [URLQueryItem]()
@@ -35,7 +35,7 @@ extension Requestable {
         }
         
         guard let url = urlComponent.url else {
-            throw NetworkError.makeURLError
+            throw URLRequestError.makeURLError
         }
         
         return URLRequest(url: url)

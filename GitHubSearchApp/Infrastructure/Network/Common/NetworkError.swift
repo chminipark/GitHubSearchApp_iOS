@@ -11,10 +11,8 @@ enum NetworkError: Error, Equatable {
     static func == (lhs: NetworkError, rhs: NetworkError) -> Bool {
         return lhs.description == rhs.description
     }
-    
-    case urlComponentError
-    case queryEncodingError
-    case makeURLError
+
+    case urlReqeustError(URLRequestError)
     case responseError(Error)
     case unknownError
     case statusCodeError(Int)
@@ -25,12 +23,8 @@ enum NetworkError: Error, Equatable {
     var description: String {
         let base = "😡😡😡😡😡"
         switch self {
-        case .urlComponentError:
-            return base + "urlComponentError"
-        case .queryEncodingError:
-            return base + "queryEncodingError"
-        case .makeURLError:
-            return base + "makeURLError"
+        case .urlReqeustError(let urlReqeustError):
+            return urlReqeustError.description
         case .responseError(let error):
             return base + "responseError : \(error.localizedDescription)"
         case .unknownError:
@@ -43,6 +37,24 @@ enum NetworkError: Error, Equatable {
             return base + "decodingError"
         case .requestLimitError:
             return base + "requestLimitError"
+        }
+    }
+}
+
+enum URLRequestError: Error {
+    case urlComponentError
+    case queryEncodingError
+    case makeURLError
+    
+    var description: String {
+        let base = "😡😡😡😡😡"
+        switch self {
+        case .urlComponentError:
+            return base + "urlComponentError"
+        case .queryEncodingError:
+            return base + "queryEncodingError"
+        case .makeURLError:
+            return base + "makeURLError"
         }
     }
 }

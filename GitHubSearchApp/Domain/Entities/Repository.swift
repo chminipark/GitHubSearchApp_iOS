@@ -9,7 +9,7 @@ import Foundation
 import Differentiator
 
 struct Repository: IdentifiableType, Equatable {
-    let id = UUID()
+    var id = UUID()
     let name: String
     let description: String
     let starCount: Int

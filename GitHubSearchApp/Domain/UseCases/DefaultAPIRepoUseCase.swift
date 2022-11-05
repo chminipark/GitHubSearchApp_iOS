@@ -8,24 +8,24 @@
 import Foundation
 import RxSwift
 
-protocol RepoUseCase {
-    func getRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>>
+protocol APIRepoUseCase {
+    func getSearchRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], NetworkError>>
 }
 
-class DefaultRepoUseCase: RepoUseCase {
-    let repoGateWay: APIRepoGateWay
+class DefaultAPIRepoUseCase: APIRepoUseCase {
+    let apiRepoGateway: APIRepoGateWay
     var mySection = MySection(headerTitle: "mySection", items: [])
     
-    init (repoGateWay: APIRepoGateWay) {
-        self.repoGateWay = repoGateWay
+    init (apiRepoGateway: APIRepoGateWay) {
+        self.apiRepoGateway = apiRepoGateway
     }
     
-    func getRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>> {
-        return repoGateWay
+    func getSearchRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], NetworkError>> {
+        return apiRepoGateway
             .fetchRepoList(with: SearchRepoRequestDTO(searchText: searchText,
                                                       currentPage: currentPage))
             .withUnretained(self)
-            .map { (owner, data) -> Result<[MySection], Error> in
+            .map { (owner, data) -> Result<[MySection], NetworkError> in
                 switch data {
                 case .success(let dto):
                     owner.mySection.items = (originData ?? []) + dto.toDomain()

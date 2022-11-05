@@ -10,6 +10,4 @@ import Foundation
 import CoreData
 
 @objc(RepoModel)
-public class RepoModel: NSManagedObject {
-
-}
+public class RepoModel: NSManagedObject {}
