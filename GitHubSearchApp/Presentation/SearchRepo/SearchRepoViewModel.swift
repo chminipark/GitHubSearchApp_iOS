@@ -41,8 +41,8 @@ class SearchRepoViewModel {
     let alertRequestLimit = PublishSubject<Void>()
     
     init() {
-        let repoGateWay = DefaultAPIRepoGateway()
-        self.repoUseCase = DefaultAPIRepoUseCase(repoGateWay: repoGateWay)
+        let apiRepoGateway = DefaultAPIRepoGateway()
+        self.repoUseCase = DefaultAPIRepoUseCase(apiRepoGateway: apiRepoGateway)
     }
 }
 
@@ -77,7 +77,7 @@ extension SearchRepoViewModel: ViewModelType {
             .withUnretained(self)
             .flatMap { (owner, text) -> Observable<Result<[MySection], Error>> in
                 owner.setFirstFetching(with: text)
-                return owner.repoUseCase.getRepoList(searchText: text, currentPage: 1, originData: nil)
+                return owner.repoUseCase.getSearchRepoList(searchText: text, currentPage: 1, originData: nil)
             }
             .withUnretained(self)
             .map { (owner, result) -> [MySection] in
@@ -105,7 +105,7 @@ extension SearchRepoViewModel: ViewModelType {
             }
             .flatMap { (owner, originData) -> Observable<Result<[MySection], Error>> in
                 owner.setPaginationFetching()
-                return owner.repoUseCase.getRepoList(searchText: owner.searchText,
+                return owner.repoUseCase.getSearchRepoList(searchText: owner.searchText,
                                                      currentPage: owner.currentPage,
                                                      originData: originData!)
             }

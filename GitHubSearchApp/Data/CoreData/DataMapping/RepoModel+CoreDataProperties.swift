@@ -22,3 +22,22 @@ extension RepoModel {
 }
 
 extension RepoModel : Identifiable {}
+
+extension RepoModel {
+    func toDomain() -> Repository? {
+        guard let id = id,
+              let name = name,
+              let description = repoDescription,
+              let urlString = urlString
+        else {
+            return nil
+        }
+        let starCount = Int(starCount)
+        
+        return Repository(id: id,
+                          name: name,
+                          description: description,
+                          starCount: starCount,
+                          urlString: urlString)
+    }
+}

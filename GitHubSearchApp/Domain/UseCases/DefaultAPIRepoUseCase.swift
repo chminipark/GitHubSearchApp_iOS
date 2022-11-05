@@ -9,19 +9,19 @@ import Foundation
 import RxSwift
 
 protocol APIRepoUseCase {
-    func getRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>>
+    func getSearchRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>>
 }
 
 class DefaultAPIRepoUseCase: APIRepoUseCase {
-    let repoGateWay: APIRepoGateWay
+    let apiRepoGateway: APIRepoGateWay
     var mySection = MySection(headerTitle: "mySection", items: [])
     
-    init (repoGateWay: APIRepoGateWay) {
-        self.repoGateWay = repoGateWay
+    init (apiRepoGateway: APIRepoGateWay) {
+        self.apiRepoGateway = apiRepoGateway
     }
     
-    func getRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>> {
-        return repoGateWay
+    func getSearchRepoList(searchText: String, currentPage: Int, originData: [Repository]?) -> Observable<Result<[MySection], Error>> {
+        return apiRepoGateway
             .fetchRepoList(with: SearchRepoRequestDTO(searchText: searchText,
                                                       currentPage: currentPage))
             .withUnretained(self)
