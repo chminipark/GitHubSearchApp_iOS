@@ -97,10 +97,10 @@ extension StarButton {
     func buttonAction(buttonState: Bool, repository: Repository, delegate: UIViewController , disposeBag: DisposeBag) {
         if buttonState {
             CoreDataManager.shared.saveRepo(repository)
-                .subscribe(onNext: { result in
+                .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:
-                        print("CoreDataManager.shared.saveRepo(repo) Success 😘")
+                        owner.showSaveAlert(delegate: delegate)
                     case .failure(let error):
                         print(error.description)
                     }
@@ -108,15 +108,33 @@ extension StarButton {
                 .disposed(by: disposeBag)
         } else {
             CoreDataManager.shared.deleteRepo(id: repository.id)
-                .subscribe(onNext: { result in
+                .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:
-                        print("CoreDataManager.shared.deleteRepo(id: repo.id) Success 😘")
+                        owner.showDeleteAlert(delegate: delegate)
                     case .failure(let error):
                         print(error.description)
                     }
                 })
                 .disposed(by: disposeBag)
+        }
+    }
+    
+    func showSaveAlert(delegate self: UIViewController) {
+        let alertController = UIAlertController(title: "즐겨찾기 추가!", message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "확인", style: .default)
+        alertController.addAction(action)
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true)
+        }
+    }
+    
+    func showDeleteAlert(delegate self: UIViewController) {
+        let alertController = UIAlertController(title: "즐겨찾기 삭제!", message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "확인", style: .default)
+        alertController.addAction(action)
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true)
         }
     }
 }
