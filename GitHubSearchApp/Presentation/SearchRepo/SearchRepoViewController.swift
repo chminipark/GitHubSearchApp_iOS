@@ -11,10 +11,14 @@ import RxCocoa
 import RxDataSources
 import SafariServices
 
-final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
+/*
+ 즐겨찾기탭에서 저장, 삭제할때마다 starButton fill 연동
+ */
+
+final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
-    let viewModel = SearchRepoViewModel()
+    let searchRepoViewModel = SearchRepoViewModel()
     
     private let searchBar: UISearchController = {
         let sb = UISearchController()
@@ -25,7 +29,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(SearchRepoTableViewCell.self, forCellReuseIdentifier: SearchRepoTableViewCell.cellId)
+        tableView.register(RepoTableViewCell.self, forCellReuseIdentifier: RepoTableViewCell.cellId)
         tableView.separatorInset = .zero
         return tableView
     }()
@@ -61,25 +65,16 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         let configureCell: (TableViewSectionedDataSource<MySection>,
                             UITableView,
                             IndexPath,
-                            Repository) -> SearchRepoTableViewCell
-        = { dataSource, tableView, indexPath, item in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchRepoTableViewCell.cellId,
-                                                           for: indexPath) as? SearchRepoTableViewCell
+                            Repository) -> RepoTableViewCell
+        = { [weak self] dataSource, tableView, indexPath, item in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RepoTableViewCell.cellId,
+                                                           for: indexPath) as? RepoTableViewCell,
+                  let `self` = self
             else {
-                return SearchRepoTableViewCell()
+                return RepoTableViewCell()
             }
-            
-            cell.bind(repository: item)
-            
-            cell.starButton.buttonAction = { isTap in
-                if isTap {
-                    print("tap, tap")
-                    print(item.name)
-                } else {
-                    print("not tap")
-                    print(item.name)
-                }
-            }
+
+            cell.bind(repository: item, delegate: self, disposeBag: `self`.disposeBag)
             
             return cell
         }
@@ -97,7 +92,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
         let searchBarText = searchBar.searchBar.rx.text.orEmpty.asObservable()
         
         let input = SearchRepoViewModel.Input(searchBarText: searchBarText)
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        let output = searchRepoViewModel.transform(input: input, disposeBag: disposeBag)
         
         output.$searchBarText
             .subscribe(onNext: { text in
@@ -109,7 +104,7 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate {
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        viewModel.alertRequestLimit
+        searchRepoViewModel.alertRequestLimit
             .subscribe(with: self, onNext: { (owner, _) in
                 owner.showRequestLimitAlert()
             })
@@ -143,8 +138,6 @@ extension SearchRepoViewController: UITableViewDelegate {
     }
 }
 
-extension SearchRepoViewController: UIViewControllerTransitioningDelegate {}
-
 extension SearchRepoViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let totalHeight = scrollView.contentSize.height
@@ -152,8 +145,8 @@ extension SearchRepoViewController {
         let currentYOffset = scrollView.contentOffset.y
         let remainFromBottom = totalHeight - currentYOffset
         
-        if remainFromBottom < frameHeight * 2 && viewModel.viewState == .idle {
-            viewModel.pagination.onNext(())
+        if remainFromBottom < frameHeight * 2 && searchRepoViewModel.viewState == .idle {
+            searchRepoViewModel.pagination.onNext(())
         }
     }
 }

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		305A9B60FE0083A9C59565A1 /* Pods_GitHubSearchApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD114E3CA79FFBFE995E7EF7 /* Pods_GitHubSearchApp.framework */; };
-		BD00FC0329111D760099AFBD /* SearchRepoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD00FC0229111D760099AFBD /* SearchRepoTableViewCell.swift */; };
+		BD00FC0329111D760099AFBD /* RepoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD00FC0229111D760099AFBD /* RepoTableViewCell.swift */; };
 		BD0A632A28F7DFE400C080A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A632928F7DFE400C080A5 /* AppDelegate.swift */; };
 		BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0A632B28F7DFE400C080A5 /* SceneDelegate.swift */; };
 		BD0A633328F7DFE600C080A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD0A633228F7DFE600C080A5 /* Assets.xcassets */; };
@@ -64,7 +64,7 @@
 		39E34C15EAAFA15B88E4D462 /* Pods-GitHubSearchAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearchAppTests.release.xcconfig"; path = "Target Support Files/Pods-GitHubSearchAppTests/Pods-GitHubSearchAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		48DEEDB577F67690C9B810AD /* Pods-GitHubSearchApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearchApp.release.xcconfig"; path = "Target Support Files/Pods-GitHubSearchApp/Pods-GitHubSearchApp.release.xcconfig"; sourceTree = "<group>"; };
 		B119DB6275908EC99F5DDDE2 /* Pods-GitHubSearchAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearchAppTests.debug.xcconfig"; path = "Target Support Files/Pods-GitHubSearchAppTests/Pods-GitHubSearchAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		BD00FC0229111D760099AFBD /* SearchRepoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoTableViewCell.swift; sourceTree = "<group>"; };
+		BD00FC0229111D760099AFBD /* RepoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoTableViewCell.swift; sourceTree = "<group>"; };
 		BD0A632628F7DFE400C080A5 /* GitHubSearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubSearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0A632928F7DFE400C080A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD0A632B28F7DFE400C080A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -179,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				BD0A633D28F7E25E00C080A5 /* TabBarController.swift */,
+				BDC688B92914116500D7758D /* RepoTableViewCell */,
 				BD0A634428F7EEE400C080A5 /* SearchRepo */,
 				BD0A634528F7EEF000C080A5 /* FavoriteRepo */,
 				BD7A230329067298006AFC5C /* ViewModelType.swift */,
@@ -192,7 +193,6 @@
 			children = (
 				BD0A633F28F7E2D500C080A5 /* SearchRepoViewController.swift */,
 				BD2E243C28FFE7FE003513B0 /* SearchRepoViewModel.swift */,
-				BDC688B92914116500D7758D /* SearchRepoTableViewCell */,
 			);
 			path = SearchRepo;
 			sourceTree = "<group>";
@@ -350,14 +350,14 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		BDC688B92914116500D7758D /* SearchRepoTableViewCell */ = {
+		BDC688B92914116500D7758D /* RepoTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				BD00FC0229111D760099AFBD /* SearchRepoTableViewCell.swift */,
+				BD00FC0229111D760099AFBD /* RepoTableViewCell.swift */,
 				BDC688BA2914119200D7758D /* RepoLabels.swift */,
 				BDC688BC291411BF00D7758D /* StarButton.swift */,
 			);
-			path = SearchRepoTableViewCell;
+			path = RepoTableViewCell;
 			sourceTree = "<group>";
 		};
 		BDC688BE2914F64300D7758D /* CoreData */ = {
@@ -613,7 +613,7 @@
 				BD0A634228F7E32700C080A5 /* FavoriteRepoViewController.swift in Sources */,
 				BD33FB9528FEBB0D00F42776 /* APIEndpoints.swift in Sources */,
 				BD7A22C529027708006AFC5C /* MySection.swift in Sources */,
-				BD00FC0329111D760099AFBD /* SearchRepoTableViewCell.swift in Sources */,
+				BD00FC0329111D760099AFBD /* RepoTableViewCell.swift in Sources */,
 				BDC688DA29152F3000D7758D /* DefaultCoreDataRepoGateway.swift in Sources */,
 				BDC688DC2915356800D7758D /* DefaultCoreDataRepoUseCase.swift in Sources */,
 				BDC09EC228FD228C0024507F /* NetworkError.swift in Sources */,

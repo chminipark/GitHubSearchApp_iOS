@@ -1,14 +1,15 @@
 //
-//  SearchRepoTableViewCell.swift
+//  RepoTableViewCell.swift
 //  GitHubSearchApp
 //
 //  Created by chmini on 2022/11/01.
 //
 
 import UIKit
+import RxSwift
 
-class SearchRepoTableViewCell: UITableViewCell {
-    static let cellId = String(describing: SearchRepoTableViewCell.self)
+class RepoTableViewCell: UITableViewCell {
+    static let cellId = String(describing: RepoTableViewCell.self)
     let padding: CGFloat = 10
     
     let containerView = UIView()
@@ -52,8 +53,8 @@ class SearchRepoTableViewCell: UITableViewCell {
         ])
     }
     
-    func bind(repository: Repository) {
+    func bind(repository: Repository, delegate: UIViewController, disposeBag: DisposeBag) {
         self.repoLabels.configureView(repository: repository)
-        self.starButton.configureView(repository: repository)
+        self.starButton.configureView(repository: repository, delegate: delegate, disposeBag: disposeBag)
     }
 }

@@ -6,13 +6,25 @@
 //
 
 import UIKit
+import RxSwift
+import RxDataSources
+import SafariServices
 
-class FavoriteRepoViewController: UIViewController {
-    let numberList = (1...20).map { $0 }
+/*
+ - [x] 기본 스타버튼 : fill
+ - [ ] 추가 삭제시 테이블뷰 리로드 x
+ - [ ] 테이블뷰 당길때 리로드
+ */
+
+class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
+    let disposeBag = DisposeBag()
+    var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
+    let favoriteRepoViewModel = FavoriteRepoViewModel()
     
     let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(RepoTableViewCell.self, forCellReuseIdentifier: RepoTableViewCell.cellId)
+        tableView.separatorInset = .zero
         return tableView
     }()
     
@@ -22,6 +34,9 @@ class FavoriteRepoViewController: UIViewController {
         
         configureUI()
         setupTableView()
+        bindToViewModel()
+        
+        FavoriteRepoViewModel.fetchRequest.onNext(())
     }
     
     func configureUI() {
@@ -37,22 +52,57 @@ class FavoriteRepoViewController: UIViewController {
     }
     
     func setupTableView() {
-        self.tableView.dataSource = self
-    }
-}
-
-extension FavoriteRepoViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberList.count
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        var content = cell.defaultContentConfiguration()
-        content.text = "\(numberList[indexPath.row])"
-        cell.contentConfiguration = content
+        self.tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        let configureCell: (TableViewSectionedDataSource<MySection>,
+                            UITableView,
+                            IndexPath,
+                            Repository) -> RepoTableViewCell
+        = { [weak self] dataSource, tableView, indexPath, item in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RepoTableViewCell.cellId,
+                                                           for: indexPath) as? RepoTableViewCell,
+                  let `self` = self
+            else {
+                return RepoTableViewCell()
+            }
+            
+            cell.bind(repository: item, delegate: self, disposeBag: `self`.disposeBag)
+            cell.starButton.isTap = true
+            
+            return cell
+        }
+        self.dataSource = .init(configureCell: configureCell)
         
-        cell.separatorInset = .zero
-        return cell
+        tableView.rx.modelSelected(Repository.self)
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, repo) in
+                owner.openInSafari(repo.urlString)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindToViewModel() {
+        let input = FavoriteRepoViewModel.Input()
+        let output = favoriteRepoViewModel.transform(input: input, disposeBag: disposeBag)
+        
+        output.$repoList
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+    }
+    
+    private func openInSafari(_ urlString: String) {
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.transitioningDelegate = self
+        safariVC.modalPresentationStyle = .pageSheet
+        
+        present(safariVC, animated: true)
     }
 }
 
+extension FavoriteRepoViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}

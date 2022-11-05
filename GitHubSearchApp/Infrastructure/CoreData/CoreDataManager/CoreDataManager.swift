@@ -61,6 +61,7 @@ class CoreDataManager {
                         switch result {
                         case .success:
                             emitter.onNext(.success(()))
+                            FavoriteRepoViewModel.fetchRequest.onNext(())
                         case .failure(let error):
                             emitter.onNext(.failure(error))
                         }
@@ -85,6 +86,7 @@ class CoreDataManager {
                     if results.count != 0 {
                         `self`.context?.delete(results[0])
                         emitter.onNext(.success(()))
+                        FavoriteRepoViewModel.fetchRequest.onNext(())
                     }
                 }
             } catch {
