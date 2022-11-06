@@ -16,6 +16,7 @@ class CoreDataManager {
     lazy var context = appDelegate?.persistentContainer.viewContext
     
     let modelName: String = "RepoModel"
+    let dataChangeName = Notification.Name.NSManagedObjectContextObjectsDidChange
     
     func fetchRepos(ascending: Bool = false) -> Observable<Result<[RepoModel], CoreDataError>> {
         Observable.create { [weak self] emitter in
@@ -61,7 +62,6 @@ class CoreDataManager {
                         switch result {
                         case .success:
                             emitter.onNext(.success(()))
-                            FavoriteRepoViewModel.fetchRequest.onNext(())
                         case .failure(let error):
                             emitter.onNext(.failure(error))
                         }
@@ -86,7 +86,6 @@ class CoreDataManager {
                     if results.count != 0 {
                         `self`.context?.delete(results[0])
                         emitter.onNext(.success(()))
-                        FavoriteRepoViewModel.fetchRequest.onNext(())
                     }
                 }
             } catch {
@@ -95,6 +94,16 @@ class CoreDataManager {
             
             return Disposables.create()
         }
+    }
+    
+    var dataUUID = 0
+    func dataChangeObservable() -> Observable<Int> {
+        return NotificationCenter.default.rx.notification(dataChangeName)
+            .withUnretained(self)
+            .map { (owner, _) -> Int in
+                owner.dataUUID += 1
+                return owner.dataUUID
+            }
     }
 }
 
