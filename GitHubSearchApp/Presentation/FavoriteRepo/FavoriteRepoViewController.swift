@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import RxDataSources
 import SafariServices
 
@@ -35,8 +36,7 @@ class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIView
         configureUI()
         setupTableView()
         bindToViewModel()
-        
-        FavoriteRepoViewModel.fetchRequest.onNext(())
+        firstInitWithData()
     }
     
     func configureUI() {
@@ -81,12 +81,18 @@ class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIView
     }
     
     private func bindToViewModel() {
-        let input = FavoriteRepoViewModel.Input()
+        let viewWillAppear = self.rx.viewWillAppear
+        
+        let input = FavoriteRepoViewModel.Input(viewWillAppear: viewWillAppear)
         let output = favoriteRepoViewModel.transform(input: input, disposeBag: disposeBag)
         
         output.$repoList
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+    }
+    
+    private func firstInitWithData() {
+        favoriteRepoViewModel.fetchRequest.onNext(())
     }
     
     private func openInSafari(_ urlString: String) {

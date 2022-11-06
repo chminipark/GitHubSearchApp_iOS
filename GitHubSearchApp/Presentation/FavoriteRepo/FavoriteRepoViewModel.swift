@@ -11,7 +11,8 @@ import RxSwift
 class FavoriteRepoViewModel {
     let coreDataRepoUseCase: DefaultCoreDataRepoUseCase
     
-    static let fetchRequest = PublishSubject<Void>()
+    let fetchRequest = PublishSubject<Void>()
+    var dataUUID: Int = 0
     
     init() {
         let coreDataRepoGateway = DefaultCoreDataRepoGateway()
@@ -21,6 +22,7 @@ class FavoriteRepoViewModel {
 
 extension FavoriteRepoViewModel: ViewModelType {
     struct Input {
+        let viewWillAppear: Observable<Bool>
     }
     
     struct Output {
@@ -30,8 +32,7 @@ extension FavoriteRepoViewModel: ViewModelType {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        FavoriteRepoViewModel
-            .fetchRequest
+        fetchRequest
             .withUnretained(self)
             .flatMap { (owner, _) -> Observable<Result<[MySection], CoreDataError>> in
                 return owner.coreDataRepoUseCase.getFavoriteRepoList()
@@ -48,6 +49,49 @@ extension FavoriteRepoViewModel: ViewModelType {
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
         
+        let dataChangeObservable = CoreDataManager.shared.dataChangeObservable()
+        input.viewWillAppear.withLatestFrom(dataChangeObservable)
+            .withUnretained(self)
+            .filter { (owner, dataUUId) -> Bool in
+                owner.dataUUID != dataUUId
+            }
+            .subscribe(onNext: { (owner, dataUUID) in
+                print("😘 withLatestFrom!")
+                owner.dataUUID = dataUUID
+                owner.fetchRequest.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
 }
+
+
+extension Reactive where Base: UIViewController {
+    public var viewWillAppear: Observable<Bool> {
+        return methodInvoked(#selector(Base.viewWillAppear))
+            .map { $0.first as? Bool ?? false }
+    }
+}
+
+
+
+
+//
+//
+//// rx로 리팩토링
+////        NotificationCenter.default.rx.notification(.NSManagedObjectContextObjectsDidChange)
+////            .flatMap { _ in
+////                CoreDataManager.shared.fetchRepos()
+////            }
+////            .map { data in
+////
+////            }
+//
+//let viewWillAppear = self.rx.viewWillAppear
+//let dataChange = CoreDataManager.shared.dataChangeObservable()
+//
+//viewWillAppear.withLatestFrom(dataChange)
+//    .subscribe(onNext: bool in
+//
+//    )
