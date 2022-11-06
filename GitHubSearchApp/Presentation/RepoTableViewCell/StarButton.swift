@@ -49,7 +49,6 @@ class StarButton: UIView {
     }
     
     @objc func touchUpInside() {
-        isTap = !isTap
         guard let repository = repository,
               let delegate = delegate,
               let disposeBag = disposeBag
@@ -100,6 +99,7 @@ extension StarButton {
                 .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:
+                        owner.isTap = !owner.isTap
                         owner.showSaveAlert(delegate: delegate)
                     case .failure(let error):
                         print(error.description)
@@ -111,6 +111,7 @@ extension StarButton {
                 .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:
+                        owner.isTap = !owner.isTap
                         owner.showDeleteAlert(delegate: delegate)
                     case .failure(let error):
                         print(error.description)
