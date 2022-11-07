@@ -49,6 +49,7 @@ class SearchRepoViewModel {
 extension SearchRepoViewModel: ViewModelType {
     struct Input {
         let searchBarText: Observable<String>
+        let viewWillAppear: Observable<Bool>
     }
     
     struct Output {
@@ -128,6 +129,7 @@ extension SearchRepoViewModel: ViewModelType {
     }
 }
 
+// API
 extension SearchRepoViewModel {
     func setFirstFetching(with text: String) {
         viewState = .isLoading
@@ -176,30 +178,39 @@ extension SearchRepoViewModel {
     }
 }
 
-extension SearchRepoViewModel {
-    func buttonAction(buttonState: Bool, repo: Repository, disposeBag: DisposeBag) {
-        if buttonState {
-            CoreDataManager.shared.saveRepo(repo)
-                .subscribe(onNext: { result in
-                    switch result {
-                    case .success:
-                        print("CoreDataManager.shared.saveRepo(repo) Success 😘")
-                    case .failure(let error):
-                        print(error.description)
-                    }
-                })
-                .disposed(by: disposeBag)
-        } else {
-            CoreDataManager.shared.deleteRepo(id: repo.id)
-                .subscribe(onNext: { result in
-                    switch result {
-                    case .success:
-                        print("CoreDataManager.shared.deleteRepo(id: repo.id) Success 😘")
-                    case .failure(let error):
-                        print(error.description)
-                    }
-                })
-                .disposed(by: disposeBag)
-        }
-    }
-}
+//extension SearchRepoViewModel {
+//    func isInOrigianData(with originData: [Repository]?, find repo: Repository) -> Bool {
+//        guard let repoList = originData else {
+//            return false
+//        }
+//        
+//    }
+//}
+
+//extension SearchRepoViewModel {
+//    func buttonAction(buttonState: Bool, repo: Repository, disposeBag: DisposeBag) {
+//        if buttonState {
+//            CoreDataManager.shared.saveRepo(repo)
+//                .subscribe(onNext: { result in
+//                    switch result {
+//                    case .success:
+//                        print("CoreDataManager.shared.saveRepo(repo) Success 😘")
+//                    case .failure(let error):
+//                        print(error.description)
+//                    }
+//                })
+//                .disposed(by: disposeBag)
+//        } else {
+//            CoreDataManager.shared.deleteRepo(id: repo.id)
+//                .subscribe(onNext: { result in
+//                    switch result {
+//                    case .success:
+//                        print("CoreDataManager.shared.deleteRepo(id: repo.id) Success 😘")
+//                    case .failure(let error):
+//                        print(error.description)
+//                    }
+//                })
+//                .disposed(by: disposeBag)
+//        }
+//    }
+//}

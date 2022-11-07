@@ -13,7 +13,38 @@ import SafariServices
 
 /*
  즐겨찾기탭에서 저장, 삭제할때마다 starButton fill 연동
+ 
+ 1.
+ 즐겨찾기단에서 Noti로 저장 삭제할때마다 repo 담아서 post
+ 
+ repository uuid = urlString으로 모두 바꾸기
  */
+
+protocol NotificationCenterProtocol {
+    var name: Notification.Name { get }
+}
+
+extension NotificationCenterProtocol {
+    func addObserver() -> Observable<Any?> {
+        return NotificationCenter.default.rx.notification(self.name).map { $0.object }
+    }
+    
+    func post(object: Any? = nil) {
+        NotificationCenter.default.post(name: self.name, object: object, userInfo: nil)
+    }
+}
+
+enum ApplicationNotificationCenter: NotificationCenterProtocol {
+    case modifyCoreData
+
+    var name: Notification.Name {
+        switch self {
+        case .modifyCoreData:
+            return Notification.Name("ApplicationNotificationCenter.modifyCoreData")
+        }
+    }
+}
+    
 
 final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     let disposeBag = DisposeBag()
@@ -90,8 +121,10 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UI
     
     private func bindToViewModel() {
         let searchBarText = searchBar.searchBar.rx.text.orEmpty.asObservable()
+        let viewWillAppear = self.rx.viewWillAppear
         
-        let input = SearchRepoViewModel.Input(searchBarText: searchBarText)
+        let input = SearchRepoViewModel.Input(searchBarText: searchBarText,
+                                              viewWillAppear: viewWillAppear)
         let output = searchRepoViewModel.transform(input: input, disposeBag: disposeBag)
         
         output.$searchBarText

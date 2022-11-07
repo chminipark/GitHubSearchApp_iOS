@@ -95,29 +95,31 @@ class StarButton: UIView {
 extension StarButton {
     func buttonAction(buttonState: Bool, repository: Repository, delegate: UIViewController , disposeBag: DisposeBag) {
         if buttonState {
-            CoreDataManager.shared.saveRepo(repository)
+            CoreDataManager.shared.deleteRepo(id: repository.urlString)
                 .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:
                         owner.isTap = !owner.isTap
-                        owner.showSaveAlert(delegate: delegate)
+                        owner.showDeleteAlert(delegate: delegate)
+                        owner.notifyChangeDataInFavoriteView(delegate: delegate, repo: repository)
                     case .failure(let error):
                         print(error.description)
                     }
                 })
                 .disposed(by: disposeBag)
         } else {
-            CoreDataManager.shared.deleteRepo(id: repository.id)
+            CoreDataManager.shared.saveRepo(repository)
                 .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:
                         owner.isTap = !owner.isTap
-                        owner.showDeleteAlert(delegate: delegate)
+                        owner.showSaveAlert(delegate: delegate)
+                        owner.notifyChangeDataInFavoriteView(delegate: delegate, repo: repository)
                     case .failure(let error):
                         print(error.description)
                     }
                 })
-                .disposed(by: disposeBag)
+                .disposed(by: disposeBag)   
         }
     }
     
@@ -136,6 +138,12 @@ extension StarButton {
         alertController.addAction(action)
         DispatchQueue.main.async {
             self.present(alertController, animated: true)
+        }
+    }
+    
+    func notifyChangeDataInFavoriteView(delegate view: UIViewController, repo: Repository) {
+        if view is FavoriteRepoViewController {
+            ApplicationNotificationCenter.modifyCoreData.post(object: repo)
         }
     }
 }

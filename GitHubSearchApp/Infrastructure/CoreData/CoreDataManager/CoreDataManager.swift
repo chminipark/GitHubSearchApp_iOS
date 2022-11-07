@@ -10,13 +10,13 @@ import CoreData
 import RxSwift
 
 class CoreDataManager {
-    static let shared: CoreDataManager = CoreDataManager()
+    static let shared = CoreDataManager()
     
     let appDelegate: AppDelegate? = UIApplication.shared.delegate as? AppDelegate
     lazy var context = appDelegate?.persistentContainer.viewContext
     
     let modelName: String = "RepoModel"
-    let dataChangeName = Notification.Name.NSManagedObjectContextObjectsDidChange
+    let dataChangeNotiName = Notification.Name.NSManagedObjectContextObjectsDidChange
     
     func fetchRepos(ascending: Bool = false) -> Observable<Result<[RepoModel], CoreDataError>> {
         Observable.create { [weak self] emitter in
@@ -52,7 +52,6 @@ class CoreDataManager {
                let entity = NSEntityDescription.entity(forEntityName: `self`.modelName, in: context) {
                 
                 if let repoModel = NSManagedObject(entity: entity, insertInto: context) as? RepoModel {
-                    repoModel.id = repo.id
                     repoModel.name = repo.name
                     repoModel.repoDescription = repo.description
                     repoModel.starCount = Int64(repo.starCount)
@@ -73,13 +72,13 @@ class CoreDataManager {
         }
     }
     
-    func deleteRepo(id: UUID) -> Observable<Result<Void, CoreDataError>> {
+    func deleteRepo(id urlString: String) -> Observable<Result<Void, CoreDataError>> {
         Observable.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
             }
             
-            let fetchRequest = `self`.filteredRequest(id: id)
+            let fetchRequest = `self`.filteredRequest(id: urlString)
             
             do {
                 if let results = try `self`.context?.fetch(fetchRequest) as? [RepoModel] {
@@ -98,7 +97,7 @@ class CoreDataManager {
     
     var dataUUID = 0
     func dataChangeObservable() -> Observable<Int> {
-        return NotificationCenter.default.rx.notification(dataChangeName)
+        return NotificationCenter.default.rx.notification(dataChangeNotiName)
             .withUnretained(self)
             .map { (owner, _) -> Int in
                 owner.dataUUID += 1
@@ -108,9 +107,9 @@ class CoreDataManager {
 }
 
 extension CoreDataManager {
-    fileprivate func filteredRequest(id: UUID) -> NSFetchRequest<NSFetchRequestResult> {
+    fileprivate func filteredRequest(id urlString: String) -> NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: modelName)
-        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "urlString == %@", urlString)
         return fetchRequest
     }
     
