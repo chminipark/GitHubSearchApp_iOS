@@ -16,6 +16,8 @@ class CoreDataManager {
     lazy var context = appDelegate?.persistentContainer.viewContext
     let modelName: String = "RepoModel"
     
+    @Property var modifiedData = [String : Bool]()
+    
     func fetchRepos(ascending: Bool = false) -> Observable<Result<[RepoModel], CoreDataError>> {
         Observable.create { [weak self] emitter in
             guard let `self` = self else {
@@ -59,6 +61,7 @@ class CoreDataManager {
                         switch result {
                         case .success:
                             emitter.onNext(.success(()))
+                            `self`.addRepoInDict(key: repo.urlString, state: true)
                         case .failure(let error):
                             emitter.onNext(.failure(error))
                         }
@@ -70,7 +73,7 @@ class CoreDataManager {
         }
     }
     
-    func deleteRepo(id urlString: String) -> Observable<Result<Void, CoreDataError>> {
+    func deleteRepo(key urlString: String) -> Observable<Result<Void, CoreDataError>> {
         Observable.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
@@ -83,6 +86,7 @@ class CoreDataManager {
                     if results.count != 0 {
                         `self`.context?.delete(results[0])
                         emitter.onNext(.success(()))
+                        `self`.addRepoInDict(key: urlString, state: true)
                     }
                 }
             } catch {
@@ -91,18 +95,6 @@ class CoreDataManager {
             
             return Disposables.create()
         }
-    }
-    
-    var dataUUID = 0
-    func dataChangeObservable() -> Observable<Int> {
-        return ApplicationNotificationCenter
-            .dataDidChange
-            .addObserver()
-            .withUnretained(self)
-            .map { (owner, _) -> Int in
-                owner.dataUUID += 1
-                return owner.dataUUID
-            }
     }
 }
 
@@ -120,5 +112,15 @@ extension CoreDataManager {
         } catch {
             completion(.failure(.saveError(error)))
         }
+    }
+}
+
+extension CoreDataManager {
+    func addRepoInDict(key urlString: String, state: Bool) {
+        modifiedData[urlString] = state
+    }
+    
+    func resetDict() {
+        modifiedData.removeAll()
     }
 }

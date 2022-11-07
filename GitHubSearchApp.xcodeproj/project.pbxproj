@@ -22,7 +22,7 @@
 		BD33FB9528FEBB0D00F42776 /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD33FB9428FEBB0D00F42776 /* APIEndpoints.swift */; };
 		BD33FB9728FEC5CE00F42776 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD33FB9628FEC5CE00F42776 /* MockData.swift */; };
 		BD6B9E8B2918EE93005CC838 /* ApplicationNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6B9E8A2918EE93005CC838 /* ApplicationNotificationCenter.swift */; };
-		BD6B9E8D2918EFC9005CC838 /* Extenstion+Reactive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6B9E8C2918EFC9005CC838 /* Extenstion+Reactive.swift */; };
+		BD6B9E8D2918EFC9005CC838 /* Extension+Reactive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6B9E8C2918EFC9005CC838 /* Extension+Reactive.swift */; };
 		BD7A22C529027708006AFC5C /* MySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A22C429027708006AFC5C /* MySection.swift */; };
 		BD7A22FC290403B7006AFC5C /* DefaultAPIRepoGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A22FB290403B7006AFC5C /* DefaultAPIRepoGateway.swift */; };
 		BD7A22FF29040E20006AFC5C /* DefaultAPIRepoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A22FE29040E20006AFC5C /* DefaultAPIRepoUseCase.swift */; };
@@ -82,7 +82,7 @@
 		BD33FB9428FEBB0D00F42776 /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
 		BD33FB9628FEC5CE00F42776 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		BD6B9E8A2918EE93005CC838 /* ApplicationNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationNotificationCenter.swift; sourceTree = "<group>"; };
-		BD6B9E8C2918EFC9005CC838 /* Extenstion+Reactive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extenstion+Reactive.swift"; sourceTree = "<group>"; };
+		BD6B9E8C2918EFC9005CC838 /* Extension+Reactive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Reactive.swift"; sourceTree = "<group>"; };
 		BD7A22C429027708006AFC5C /* MySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySection.swift; sourceTree = "<group>"; };
 		BD7A22FB290403B7006AFC5C /* DefaultAPIRepoGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAPIRepoGateway.swift; sourceTree = "<group>"; };
 		BD7A22FE29040E20006AFC5C /* DefaultAPIRepoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAPIRepoUseCase.swift; sourceTree = "<group>"; };
@@ -223,7 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				BD2E244129000FD9003513B0 /* Property.swift */,
-				BD6B9E8C2918EFC9005CC838 /* Extenstion+Reactive.swift */,
+				BD6B9E8C2918EFC9005CC838 /* Extension+Reactive.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -653,7 +653,7 @@
 				BDBFB70128FD9BD90071FA1C /* SearchRepoRequestDTO.swift in Sources */,
 				BD6B9E8B2918EE93005CC838 /* ApplicationNotificationCenter.swift in Sources */,
 				BD2E244229000FD9003513B0 /* Property.swift in Sources */,
-				BD6B9E8D2918EFC9005CC838 /* Extenstion+Reactive.swift in Sources */,
+				BD6B9E8D2918EFC9005CC838 /* Extension+Reactive.swift in Sources */,
 				BD0A632C28F7DFE400C080A5 /* SceneDelegate.swift in Sources */,
 				BD7A230429067298006AFC5C /* ViewModelType.swift in Sources */,
 				BDC688CB2914FDE000D7758D /* CoreDataManager.swift in Sources */,

@@ -28,10 +28,10 @@ extension RepoModel {
         }
         let starCount = Int(starCount)
         
-        return Repository(
-            name: name,
-            description: description,
-            starCount: starCount,
-            urlString: urlString)
+        return Repository(name: name,
+                          description: description,
+                          starCount: starCount,
+                          urlString: urlString,
+                          isStore: true)
     }
 }

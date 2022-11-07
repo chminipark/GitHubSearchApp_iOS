@@ -125,7 +125,58 @@ extension SearchRepoViewModel: ViewModelType {
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
         
+        let dataChangeObservable = CoreDataManager.shared.$modifiedData
+        input.viewWillAppear.withLatestFrom(dataChangeObservable)
+            .map { modifiedData -> ([String : Bool], [MySection]) in
+                return (modifiedData, output.repoList)
+            }
+            .withUnretained(self)
+            .filter { (owner, tuple) -> Bool in
+                return owner.checkReloadData(modifiedData: tuple.0, mySection: tuple.1)
+            }
+            .map { (owner, tuple) -> [MySection] in
+                return owner.fillStar(modifiedData: tuple.0, mySection: tuple.1)
+            }
+            .bind(to: output.$repoList)
+            .disposed(by: disposeBag)
+        
         return output
+    }
+    
+    func checkReloadData(modifiedData: [String : Bool], mySection: [MySection]) -> Bool {
+        guard let originData = mySection.first?.items as? [Repository],
+              !modifiedData.isEmpty
+        else {
+            return false
+        }
+        
+        for urlString in modifiedData.keys {
+            for repo in originData {
+                if urlString == repo.urlString {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
+    func fillStar(modifiedData: [String : Bool], mySection: [MySection]) -> [MySection] {
+        let originData = mySection.first!.items as [Repository]
+        var repoList = originData
+        for (urlString, isStore) in modifiedData {
+            for (index, repo) in originData.enumerated() {
+                if repo.urlString == urlString {
+                    repoList[index].isStore = isStore
+                    break
+                }
+            }
+        }
+        
+        var newMySection = mySection.first!
+        newMySection.items = repoList
+        CoreDataManager.shared.resetDict()
+        return [newMySection]
     }
 }
 

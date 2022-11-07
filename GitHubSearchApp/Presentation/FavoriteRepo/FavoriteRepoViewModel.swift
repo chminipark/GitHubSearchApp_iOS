@@ -49,16 +49,16 @@ extension FavoriteRepoViewModel: ViewModelType {
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
         
-        let dataChangeObservable = CoreDataManager.shared.dataChangeObservable()
+        let dataChangeObservable = CoreDataManager.shared.$modifiedData
         input.viewWillAppear.withLatestFrom(dataChangeObservable)
             .withUnretained(self)
-            .filter { (owner, dataUUId) -> Bool in
-                owner.dataUUID != dataUUId
+            .filter { (owner, modifiedData) -> Bool in
+                !modifiedData.isEmpty
             }
-            .subscribe(onNext: { (owner, dataUUID) in
+            .subscribe(onNext: { (owner, _) in
                 print("😘 withLatestFrom!")
-                owner.dataUUID = dataUUID
                 owner.fetchRequest.onNext(())
+                CoreDataManager.shared.resetDict()
             })
             .disposed(by: disposeBag)
         

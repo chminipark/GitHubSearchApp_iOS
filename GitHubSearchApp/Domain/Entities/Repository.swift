@@ -13,15 +13,19 @@ struct Repository: IdentifiableType, Equatable {
     let description: String
     let starCount: Int
     let urlString: String
+    var isStore: Bool
     
     init(name: String,
          description: String,
          starCount: Int,
-         urlString: String) {
+         urlString: String,
+         isStore: Bool = false)
+    {
         self.name = name
         self.description = description
         self.starCount = starCount
         self.urlString = urlString
+        self.isStore = isStore
     }
     
     var identity: String {
