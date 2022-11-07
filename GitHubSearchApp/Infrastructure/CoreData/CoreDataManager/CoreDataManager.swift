@@ -14,9 +14,7 @@ class CoreDataManager {
     
     let appDelegate: AppDelegate? = UIApplication.shared.delegate as? AppDelegate
     lazy var context = appDelegate?.persistentContainer.viewContext
-    
     let modelName: String = "RepoModel"
-    let dataChangeNotiName = Notification.Name.NSManagedObjectContextObjectsDidChange
     
     func fetchRepos(ascending: Bool = false) -> Observable<Result<[RepoModel], CoreDataError>> {
         Observable.create { [weak self] emitter in
@@ -97,7 +95,9 @@ class CoreDataManager {
     
     var dataUUID = 0
     func dataChangeObservable() -> Observable<Int> {
-        return NotificationCenter.default.rx.notification(dataChangeNotiName)
+        return ApplicationNotificationCenter
+            .dataDidChange
+            .addObserver()
             .withUnretained(self)
             .map { (owner, _) -> Int in
                 owner.dataUUID += 1

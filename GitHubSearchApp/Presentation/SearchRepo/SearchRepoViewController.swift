@@ -20,33 +20,7 @@ import SafariServices
  repository uuid = urlString으로 모두 바꾸기
  */
 
-protocol NotificationCenterProtocol {
-    var name: Notification.Name { get }
-}
-
-extension NotificationCenterProtocol {
-    func addObserver() -> Observable<Any?> {
-        return NotificationCenter.default.rx.notification(self.name).map { $0.object }
-    }
-    
-    func post(object: Any? = nil) {
-        NotificationCenter.default.post(name: self.name, object: object, userInfo: nil)
-    }
-}
-
-enum ApplicationNotificationCenter: NotificationCenterProtocol {
-    case modifyCoreData
-
-    var name: Notification.Name {
-        switch self {
-        case .modifyCoreData:
-            return Notification.Name("ApplicationNotificationCenter.modifyCoreData")
-        }
-    }
-}
-    
-
-final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
+final class SearchRepoViewController: UIViewController {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
     let searchRepoViewModel = SearchRepoViewModel()
@@ -156,7 +130,9 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UI
     }
     
     private func showRequestLimitAlert() {
-        let alertController = UIAlertController(title: "API Request Limit", message: "10 per miniute, try after 1 minute", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "API Request Limit",
+                                                message: "10 per miniute, try after 1 minute",
+                                                preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default)
         alertController.addAction(action)
         DispatchQueue.main.async {
@@ -183,3 +159,5 @@ extension SearchRepoViewController {
         }
     }
 }
+
+extension SearchRepoViewController: UIScrollViewDelegate, UIViewControllerTransitioningDelegate {}

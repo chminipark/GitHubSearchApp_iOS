@@ -101,7 +101,6 @@ extension StarButton {
                     case .success:
                         owner.isTap = !owner.isTap
                         owner.showDeleteAlert(delegate: delegate)
-                        owner.notifyChangeDataInFavoriteView(delegate: delegate, repo: repository)
                     case .failure(let error):
                         print(error.description)
                     }
@@ -114,12 +113,11 @@ extension StarButton {
                     case .success:
                         owner.isTap = !owner.isTap
                         owner.showSaveAlert(delegate: delegate)
-                        owner.notifyChangeDataInFavoriteView(delegate: delegate, repo: repository)
                     case .failure(let error):
                         print(error.description)
                     }
                 })
-                .disposed(by: disposeBag)   
+                .disposed(by: disposeBag)
         }
     }
     
@@ -138,12 +136,6 @@ extension StarButton {
         alertController.addAction(action)
         DispatchQueue.main.async {
             self.present(alertController, animated: true)
-        }
-    }
-    
-    func notifyChangeDataInFavoriteView(delegate view: UIViewController, repo: Repository) {
-        if view is FavoriteRepoViewController {
-            ApplicationNotificationCenter.modifyCoreData.post(object: repo)
         }
     }
 }

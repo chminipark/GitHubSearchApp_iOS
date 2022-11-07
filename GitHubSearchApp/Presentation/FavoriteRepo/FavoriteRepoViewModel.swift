@@ -65,33 +65,3 @@ extension FavoriteRepoViewModel: ViewModelType {
         return output
     }
 }
-
-
-extension Reactive where Base: UIViewController {
-    public var viewWillAppear: Observable<Bool> {
-        return methodInvoked(#selector(Base.viewWillAppear))
-            .map { $0.first as? Bool ?? false }
-    }
-}
-
-
-
-
-//
-//
-//// rx로 리팩토링
-////        NotificationCenter.default.rx.notification(.NSManagedObjectContextObjectsDidChange)
-////            .flatMap { _ in
-////                CoreDataManager.shared.fetchRepos()
-////            }
-////            .map { data in
-////
-////            }
-//
-//let viewWillAppear = self.rx.viewWillAppear
-//let dataChange = CoreDataManager.shared.dataChangeObservable()
-//
-//viewWillAppear.withLatestFrom(dataChange)
-//    .subscribe(onNext: bool in
-//
-//    )
