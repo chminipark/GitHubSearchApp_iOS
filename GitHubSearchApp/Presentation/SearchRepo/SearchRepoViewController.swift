@@ -13,9 +13,14 @@ import SafariServices
 
 /*
  즐겨찾기탭에서 저장, 삭제할때마다 starButton fill 연동
+ 
+ 1.
+ 즐겨찾기단에서 Noti로 저장 삭제할때마다 repo 담아서 post
+ 
+ repository uuid = urlString으로 모두 바꾸기
  */
 
-final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
+final class SearchRepoViewController: UIViewController {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
     let searchRepoViewModel = SearchRepoViewModel()
@@ -90,8 +95,10 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UI
     
     private func bindToViewModel() {
         let searchBarText = searchBar.searchBar.rx.text.orEmpty.asObservable()
+        let viewWillAppear = self.rx.viewWillAppear
         
-        let input = SearchRepoViewModel.Input(searchBarText: searchBarText)
+        let input = SearchRepoViewModel.Input(searchBarText: searchBarText,
+                                              viewWillAppear: viewWillAppear)
         let output = searchRepoViewModel.transform(input: input, disposeBag: disposeBag)
         
         output.$searchBarText
@@ -123,7 +130,9 @@ final class SearchRepoViewController: UIViewController, UIScrollViewDelegate, UI
     }
     
     private func showRequestLimitAlert() {
-        let alertController = UIAlertController(title: "API Request Limit", message: "10 per miniute, try after 1 minute", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "API Request Limit",
+                                                message: "10 per miniute, try after 1 minute",
+                                                preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default)
         alertController.addAction(action)
         DispatchQueue.main.async {
@@ -150,3 +159,5 @@ extension SearchRepoViewController {
         }
     }
 }
+
+extension SearchRepoViewController: UIScrollViewDelegate, UIViewControllerTransitioningDelegate {}

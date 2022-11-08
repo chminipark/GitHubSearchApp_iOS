@@ -85,6 +85,7 @@ class StarButton: UIView {
     }
     
     func configureView(repository: Repository, delegate: UIViewController, disposeBag: DisposeBag) {
+        self.isTap = repository.isStore
         self.starCountLabel.text = String(repository.starCount)
         self.repository = repository
         self.delegate = delegate
@@ -95,24 +96,24 @@ class StarButton: UIView {
 extension StarButton {
     func buttonAction(buttonState: Bool, repository: Repository, delegate: UIViewController , disposeBag: DisposeBag) {
         if buttonState {
-            CoreDataManager.shared.saveRepo(repository)
+            CoreDataManager.shared.deleteRepo(repo: repository)
                 .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:
                         owner.isTap = !owner.isTap
-                        owner.showSaveAlert(delegate: delegate)
+                        owner.showDeleteAlert(delegate: delegate)
                     case .failure(let error):
                         print(error.description)
                     }
                 })
                 .disposed(by: disposeBag)
         } else {
-            CoreDataManager.shared.deleteRepo(id: repository.id)
+            CoreDataManager.shared.saveRepo(repository)
                 .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:
                         owner.isTap = !owner.isTap
-                        owner.showDeleteAlert(delegate: delegate)
+                        owner.showSaveAlert(delegate: delegate)
                     case .failure(let error):
                         print(error.description)
                     }

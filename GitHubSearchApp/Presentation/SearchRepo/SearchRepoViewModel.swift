@@ -39,16 +39,70 @@ class SearchRepoViewModel {
     
     let pagination = PublishSubject<Void>()
     let alertRequestLimit = PublishSubject<Void>()
+    let disposeBag = DisposeBag()
+    
+    var mySection = MySection(headerTitle: "mySection", items: [])
+    @Property var localData = Set<Repository>()
     
     init() {
         let apiRepoGateway = DefaultAPIRepoGateway()
-        self.apiRepoUseCase = DefaultAPIRepoUseCase(apiRepoGateway: apiRepoGateway)
+        let coreDataRepoGateWay = DefaultCoreDataRepoGateway()
+        
+        self.apiRepoUseCase = DefaultAPIRepoUseCase(apiRepoGateway: apiRepoGateway,
+                                                    coreDataRepoGateWay: coreDataRepoGateWay)
+        
+        Observable.just(())
+            .flatMapLatest { _ in
+                coreDataRepoGateWay.fetchRepoList()
+            }
+            .map { result -> Set<Repository> in
+                switch result {
+                case .success(let repoModelList):
+                    var repoSet = Set<Repository>()
+                    repoModelList.forEach { repo in
+                        if let repo = repo.toDomain() {
+                            repoSet.insert(repo)
+                        }
+                    }
+                    return repoSet
+                case .failure(let error):
+                    print(error.description)
+                    return Set<Repository>()
+                }
+            }
+            .bind(to: $localData)
+            .disposed(by: disposeBag)
+        
+        ApplicationNotificationCenter.dataDidChange
+            .addObserver()
+            .flatMapLatest { _ in
+                coreDataRepoGateWay.fetchRepoList()
+            }
+            .map { result -> Set<Repository> in
+                switch result {
+                case .success(let repoModelList):
+                    var repoSet = Set<Repository>()
+                    repoModelList.forEach { repo in
+                        if let repo = repo.toDomain() {
+                            repoSet.insert(repo)
+                        }
+                    }
+                    print("LocalData : \(repoSet.count)")
+                    return repoSet
+                case .failure(let error):
+                    print(error.description)
+                    return Set<Repository>()
+                }
+            }
+            .bind(to: $localData)
+            .disposed(by: disposeBag)
     }
 }
 
 extension SearchRepoViewModel: ViewModelType {
     struct Input {
         let searchBarText: Observable<String>
+        let viewWillAppear: Observable<Bool>
     }
     
     struct Output {
@@ -77,7 +131,9 @@ extension SearchRepoViewModel: ViewModelType {
             .withUnretained(self)
             .flatMap { (owner, text) -> Observable<Result<[MySection], NetworkError>> in
                 owner.setFirstFetching(with: text)
-                return owner.apiRepoUseCase.getSearchRepoList(searchText: text, currentPage: 1, originData: nil)
+                return owner.apiRepoUseCase.getSearchRepoList(searchText: text,
+                                                              currentPage: 1,
+                                                              originData: nil)
             }
             .withUnretained(self)
             .map { (owner, result) -> [MySection] in
@@ -89,25 +145,23 @@ extension SearchRepoViewModel: ViewModelType {
             }
             .map { (owner, mySection) -> [MySection] in
                 owner.viewState = .idle
+                owner.mySection = mySection.first!
                 return mySection
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
         
         pagination
-            .map { _ -> [Repository]? in
-                let originData = output.repoList.first?.items as? Array<Repository>
-                return originData
-            }
             .withUnretained(self)
-            .filter { (owner, repoList) -> Bool in
-                owner.checkPagination(with: repoList)
+            .filter { (owner, _) -> Bool in
+                return owner.checkPagination()
             }
-            .flatMap { (owner, originData) -> Observable<Result<[MySection], NetworkError>> in
+            .flatMap { (owner, _) -> Observable<Result<[MySection], NetworkError>> in
                 owner.setPaginationFetching()
+                let originData = owner.mySection.items as Array<Repository>
                 return owner.apiRepoUseCase.getSearchRepoList(searchText: owner.searchText,
-                                                     currentPage: owner.currentPage,
-                                                     originData: originData!)
+                                                              currentPage: owner.currentPage,
+                                                              originData: originData)
             }
             .withUnretained(self)
             .map { (owner, result) -> [MySection] in
@@ -119,7 +173,24 @@ extension SearchRepoViewModel: ViewModelType {
             }
             .map { (owner, mySection) -> [MySection] in
                 owner.viewState = .idle
+                owner.mySection = mySection.first!
                 return mySection
+            }
+            .bind(to: output.$repoList)
+            .disposed(by: disposeBag)
+        
+        input.viewWillAppear
+            .withUnretained(self)
+            .filter { (owner, _) -> Bool in
+                return !owner.localData.isEmpty
+            }
+            .map { (owner, _) -> [MySection] in
+                let localData = owner.localData
+                let fetchedData = owner.mySection.items as [Repository]
+                let newData = owner.checkResultInLocalData(localData: localData, fetchedData: fetchedData)
+                owner.mySection.items = newData
+                print("😈 SearchRepoViewModel : ViewWillAppear!")
+                return [owner.mySection]
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
@@ -128,6 +199,29 @@ extension SearchRepoViewModel: ViewModelType {
     }
 }
 
+// CoreData
+extension SearchRepoViewModel {
+    func checkResultInLocalData(localData: Set<Repository>,
+                                fetchedData: [Repository]) -> [Repository] {
+        if localData.isEmpty {
+            return fetchedData
+        }
+        
+        let localURLSet = Set(localData.map { $0.urlString })
+        
+        var repoList = fetchedData
+        for (index, repo) in fetchedData.enumerated() {
+            if localURLSet.contains(repo.urlString) {
+                repoList[index].isStore = true
+            } else {
+                repoList[index].isStore = false
+            }
+        }
+        return repoList
+    }
+}
+
+// API
 extension SearchRepoViewModel {
     func setFirstFetching(with text: String) {
         viewState = .isLoading
@@ -140,15 +234,10 @@ extension SearchRepoViewModel {
         currentPage += 1
     }
     
-    func checkPagination(with originData: [Repository]?) -> Bool {
-        if searchText == "" || viewState == .isLoading {
+    func checkPagination() -> Bool {
+        let originData = mySection.items as Array<Repository>
+        if searchText == "" || viewState == .isLoading || originData.isEmpty {
             return false
-        }
-        
-        if let originData = originData {
-            if !originData.isEmpty {
-                return true
-            }
         }
         
         return false
@@ -172,34 +261,6 @@ extension SearchRepoViewModel {
             }
             print(error.description)
             return []
-        }
-    }
-}
-
-extension SearchRepoViewModel {
-    func buttonAction(buttonState: Bool, repo: Repository, disposeBag: DisposeBag) {
-        if buttonState {
-            CoreDataManager.shared.saveRepo(repo)
-                .subscribe(onNext: { result in
-                    switch result {
-                    case .success:
-                        print("CoreDataManager.shared.saveRepo(repo) Success 😘")
-                    case .failure(let error):
-                        print(error.description)
-                    }
-                })
-                .disposed(by: disposeBag)
-        } else {
-            CoreDataManager.shared.deleteRepo(id: repo.id)
-                .subscribe(onNext: { result in
-                    switch result {
-                    case .success:
-                        print("CoreDataManager.shared.deleteRepo(id: repo.id) Success 😘")
-                    case .failure(let error):
-                        print(error.description)
-                    }
-                })
-                .disposed(by: disposeBag)
         }
     }
 }

@@ -49,49 +49,14 @@ extension FavoriteRepoViewModel: ViewModelType {
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
         
-        let dataChangeObservable = CoreDataManager.shared.dataChangeObservable()
-        input.viewWillAppear.withLatestFrom(dataChangeObservable)
+        input.viewWillAppear
             .withUnretained(self)
-            .filter { (owner, dataUUId) -> Bool in
-                owner.dataUUID != dataUUId
-            }
-            .subscribe(onNext: { (owner, dataUUID) in
-                print("😘 withLatestFrom!")
-                owner.dataUUID = dataUUID
+            .subscribe(onNext: { (owner, _) in
+                print("😘 FavoriteRepoViewModel : ViewWillAppear!")
                 owner.fetchRequest.onNext(())
             })
             .disposed(by: disposeBag)
-        
+
         return output
     }
 }
-
-
-extension Reactive where Base: UIViewController {
-    public var viewWillAppear: Observable<Bool> {
-        return methodInvoked(#selector(Base.viewWillAppear))
-            .map { $0.first as? Bool ?? false }
-    }
-}
-
-
-
-
-//
-//
-//// rx로 리팩토링
-////        NotificationCenter.default.rx.notification(.NSManagedObjectContextObjectsDidChange)
-////            .flatMap { _ in
-////                CoreDataManager.shared.fetchRepos()
-////            }
-////            .map { data in
-////
-////            }
-//
-//let viewWillAppear = self.rx.viewWillAppear
-//let dataChange = CoreDataManager.shared.dataChangeObservable()
-//
-//viewWillAppear.withLatestFrom(dataChange)
-//    .subscribe(onNext: bool in
-//
-//    )

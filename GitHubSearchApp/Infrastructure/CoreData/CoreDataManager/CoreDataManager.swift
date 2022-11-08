@@ -10,13 +10,11 @@ import CoreData
 import RxSwift
 
 class CoreDataManager {
-    static let shared: CoreDataManager = CoreDataManager()
+    static let shared = CoreDataManager()
     
     let appDelegate: AppDelegate? = UIApplication.shared.delegate as? AppDelegate
     lazy var context = appDelegate?.persistentContainer.viewContext
-    
     let modelName: String = "RepoModel"
-    let dataChangeName = Notification.Name.NSManagedObjectContextObjectsDidChange
     
     func fetchRepos(ascending: Bool = false) -> Observable<Result<[RepoModel], CoreDataError>> {
         Observable.create { [weak self] emitter in
@@ -48,11 +46,16 @@ class CoreDataManager {
                 return Disposables.create()
             }
             
+            let fetchRequest = `self`.filteredRequest(key: repo.urlString)
+            if let results = try? `self`.context?.fetch(fetchRequest) as? [RepoModel],
+               results.count == 1 {
+                return Disposables.create()
+            }
+            
             if let context = `self`.context,
                let entity = NSEntityDescription.entity(forEntityName: `self`.modelName, in: context) {
                 
                 if let repoModel = NSManagedObject(entity: entity, insertInto: context) as? RepoModel {
-                    repoModel.id = repo.id
                     repoModel.name = repo.name
                     repoModel.repoDescription = repo.description
                     repoModel.starCount = Int64(repo.starCount)
@@ -73,13 +76,12 @@ class CoreDataManager {
         }
     }
     
-    func deleteRepo(id: UUID) -> Observable<Result<Void, CoreDataError>> {
+    func deleteRepo(repo: Repository) -> Observable<Result<Void, CoreDataError>> {
         Observable.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
             }
-            
-            let fetchRequest = `self`.filteredRequest(id: id)
+            let fetchRequest = `self`.filteredRequest(key: repo.urlString)
             
             do {
                 if let results = try `self`.context?.fetch(fetchRequest) as? [RepoModel] {
@@ -95,22 +97,12 @@ class CoreDataManager {
             return Disposables.create()
         }
     }
-    
-    var dataUUID = 0
-    func dataChangeObservable() -> Observable<Int> {
-        return NotificationCenter.default.rx.notification(dataChangeName)
-            .withUnretained(self)
-            .map { (owner, _) -> Int in
-                owner.dataUUID += 1
-                return owner.dataUUID
-            }
-    }
 }
 
 extension CoreDataManager {
-    fileprivate func filteredRequest(id: UUID) -> NSFetchRequest<NSFetchRequestResult> {
+    fileprivate func filteredRequest(key urlString: String) -> NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: modelName)
-        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "urlString == %@", urlString)
         return fetchRequest
     }
     

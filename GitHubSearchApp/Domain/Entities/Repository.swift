@@ -8,26 +8,27 @@
 import Foundation
 import Differentiator
 
-struct Repository: IdentifiableType, Equatable {
-    let id: UUID
+struct Repository: IdentifiableType, Equatable, Hashable {
     let name: String
     let description: String
     let starCount: Int
     let urlString: String
+    var isStore: Bool
     
-    init(id: UUID = UUID(),
-         name: String,
+    init(name: String,
          description: String,
          starCount: Int,
-         urlString: String) {
-        self.id = id
+         urlString: String,
+         isStore: Bool = false)
+    {
         self.name = name
         self.description = description
         self.starCount = starCount
         self.urlString = urlString
+        self.isStore = isStore
     }
     
-    var identity: UUID {
-        return id
+    var identity: String {
+        return urlString
     }
 }

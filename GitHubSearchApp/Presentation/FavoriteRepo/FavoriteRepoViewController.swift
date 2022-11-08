@@ -17,7 +17,7 @@ import SafariServices
  - [ ] 테이블뷰 당길때 리로드
  */
 
-class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
+class FavoriteRepoViewController: UIViewController {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
     let favoriteRepoViewModel = FavoriteRepoViewModel()
@@ -66,8 +66,6 @@ class FavoriteRepoViewController: UIViewController, UIScrollViewDelegate, UIView
             }
             
             cell.bind(repository: item, delegate: self, disposeBag: `self`.disposeBag)
-            cell.starButton.isTap = true
-            
             return cell
         }
         self.dataSource = .init(configureCell: configureCell)
@@ -112,3 +110,5 @@ extension FavoriteRepoViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
+extension FavoriteRepoViewController: UIScrollViewDelegate, UIViewControllerTransitioningDelegate {}
