@@ -18,8 +18,6 @@ enum ViewState {
 class SearchRepoViewModel {
     let apiRepoUseCase: APIRepoUseCase
     
-    let disposeBag = DisposeBag()
-    var localData = [Repository]()
     var searchText: String = ""
     var currentPage: Int = 1
     var viewState: ViewState = .idle {
@@ -41,10 +39,63 @@ class SearchRepoViewModel {
     
     let pagination = PublishSubject<Void>()
     let alertRequestLimit = PublishSubject<Void>()
+    let disposeBag = DisposeBag()
+    
+    var mySection = MySection(headerTitle: "mySection", items: [])
+    @Property var localData = Set<Repository>()
     
     init() {
         let apiRepoGateway = DefaultAPIRepoGateway()
-        self.apiRepoUseCase = DefaultAPIRepoUseCase(apiRepoGateway: apiRepoGateway)
+        let coreDataRepoGateWay = DefaultCoreDataRepoGateway()
+        
+        self.apiRepoUseCase = DefaultAPIRepoUseCase(apiRepoGateway: apiRepoGateway,
+                                                    coreDataRepoGateWay: coreDataRepoGateWay)
+        
+        Observable.just(())
+            .flatMapLatest { _ in
+                coreDataRepoGateWay.fetchRepoList()
+            }
+            .map { result -> Set<Repository> in
+                switch result {
+                case .success(let repoModelList):
+                    var repoSet = Set<Repository>()
+                    repoModelList.forEach { repo in
+                        if let repo = repo.toDomain() {
+                            repoSet.insert(repo)
+                        }
+                    }
+                    return repoSet
+                case .failure(let error):
+                    print(error.description)
+                    return Set<Repository>()
+                }
+            }
+            .bind(to: $localData)
+            .disposed(by: disposeBag)
+        
+        ApplicationNotificationCenter.dataDidChange
+            .addObserver()
+            .flatMapLatest { _ in
+                coreDataRepoGateWay.fetchRepoList()
+            }
+            .map { result -> Set<Repository> in
+                switch result {
+                case .success(let repoModelList):
+                    var repoSet = Set<Repository>()
+                    repoModelList.forEach { repo in
+                        if let repo = repo.toDomain() {
+                            repoSet.insert(repo)
+                        }
+                    }
+                    print("LocalData : \(repoSet.count)")
+                    return repoSet
+                case .failure(let error):
+                    print(error.description)
+                    return Set<Repository>()
+                }
+            }
+            .bind(to: $localData)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -80,7 +131,9 @@ extension SearchRepoViewModel: ViewModelType {
             .withUnretained(self)
             .flatMap { (owner, text) -> Observable<Result<[MySection], NetworkError>> in
                 owner.setFirstFetching(with: text)
-                return owner.apiRepoUseCase.getSearchRepoList(searchText: text, currentPage: 1, originData: nil)
+                return owner.apiRepoUseCase.getSearchRepoList(searchText: text,
+                                                              currentPage: 1,
+                                                              originData: nil)
             }
             .withUnretained(self)
             .map { (owner, result) -> [MySection] in
@@ -92,25 +145,23 @@ extension SearchRepoViewModel: ViewModelType {
             }
             .map { (owner, mySection) -> [MySection] in
                 owner.viewState = .idle
+                owner.mySection = mySection.first!
                 return mySection
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
         
         pagination
-            .map { _ -> [Repository]? in
-                let originData = output.repoList.first?.items as? Array<Repository>
-                return originData
-            }
             .withUnretained(self)
-            .filter { (owner, repoList) -> Bool in
-                owner.checkPagination(with: repoList)
+            .filter { (owner, _) -> Bool in
+                return owner.checkPagination()
             }
-            .flatMap { (owner, originData) -> Observable<Result<[MySection], NetworkError>> in
+            .flatMap { (owner, _) -> Observable<Result<[MySection], NetworkError>> in
                 owner.setPaginationFetching()
+                let originData = owner.mySection.items as Array<Repository>
                 return owner.apiRepoUseCase.getSearchRepoList(searchText: owner.searchText,
-                                                     currentPage: owner.currentPage,
-                                                     originData: originData!)
+                                                              currentPage: owner.currentPage,
+                                                              originData: originData)
             }
             .withUnretained(self)
             .map { (owner, result) -> [MySection] in
@@ -122,30 +173,24 @@ extension SearchRepoViewModel: ViewModelType {
             }
             .map { (owner, mySection) -> [MySection] in
                 owner.viewState = .idle
+                owner.mySection = mySection.first!
                 return mySection
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
         
-        let dataChangeObservable = CoreDataManager.shared.$modifiedData
-        input.viewWillAppear.withLatestFrom(dataChangeObservable)
-            .map { modifiedData -> (Set<Repository>, [MySection]) in
-                return (modifiedData, output.repoList)
-            }
+        input.viewWillAppear
             .withUnretained(self)
-            .filter { (owner, tuple) -> Bool in
-                return owner.checkReloadData(modifiedData: tuple.0, mySection: tuple.1)
+            .filter { (owner, _) -> Bool in
+                return !owner.localData.isEmpty
             }
-            .map { (owner, tuple) -> [MySection] in
-                let originData = tuple.1.first!.items as [Repository]
-                let modifyData = Array(tuple.0)
-                let newData = CoreDataManager.shared.modifyDataInOrigin(modifiyData: modifyData, originData: originData)
-                var newMySection = tuple.1.first!
-                newMySection.items = newData
-                
-                CoreDataManager.shared.modifiedData.removeAll()
-                print("😋 SearchRepoViewModel : withLatestFrom!")
-                return [newMySection]
+            .map { (owner, _) -> [MySection] in
+                let localData = owner.localData
+                let fetchedData = owner.mySection.items as [Repository]
+                let newData = owner.checkResultInLocalData(localData: localData, fetchedData: fetchedData)
+                owner.mySection.items = newData
+                print("😈 SearchRepoViewModel : ViewWillAppear!")
+                return [owner.mySection]
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
@@ -156,44 +201,23 @@ extension SearchRepoViewModel: ViewModelType {
 
 // CoreData
 extension SearchRepoViewModel {
-    func fetchLocalData(completion: @escaping (() -> ())) {
-        CoreDataManager.shared.fetchRepos()
-            .subscribe(with: self, onNext: { (owner, result) in
-                switch result {
-                case .success(let data):
-                    var repoList = [Repository]()
-                    data.forEach { repo in
-                        if let repo = repo.toDomain() {
-                            repoList.append(repo)
-                        }
-                    }
-                    owner.localData = repoList
-                    completion()
-                case .failure(let error):
-                    print(error.description)
-                    owner.localData = []
-                    completion()
-                }
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func checkReloadData(modifiedData: Set<Repository>, mySection: [MySection]) -> Bool {
-        guard let originData = mySection.first?.items as? [Repository],
-              !modifiedData.isEmpty
-        else {
-            return false
+    func checkResultInLocalData(localData: Set<Repository>,
+                                fetchedData: [Repository]) -> [Repository] {
+        if localData.isEmpty {
+            return fetchedData
         }
         
-        for modified in modifiedData {
-            for origin in originData {
-                if modified.urlString == origin.urlString {
-                    return true
-                }
+        let localURLSet = Set(localData.map { $0.urlString })
+        
+        var repoList = fetchedData
+        for (index, repo) in fetchedData.enumerated() {
+            if localURLSet.contains(repo.urlString) {
+                repoList[index].isStore = true
+            } else {
+                repoList[index].isStore = false
             }
         }
-        
-        return false
+        return repoList
     }
 }
 
@@ -210,15 +234,10 @@ extension SearchRepoViewModel {
         currentPage += 1
     }
     
-    func checkPagination(with originData: [Repository]?) -> Bool {
-        if searchText == "" || viewState == .isLoading {
+    func checkPagination() -> Bool {
+        let originData = mySection.items as Array<Repository>
+        if searchText == "" || viewState == .isLoading || originData.isEmpty {
             return false
-        }
-        
-        if let originData = originData {
-            if !originData.isEmpty {
-                return true
-            }
         }
         
         return false

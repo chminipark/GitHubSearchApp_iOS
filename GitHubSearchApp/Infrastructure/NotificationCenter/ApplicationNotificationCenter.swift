@@ -28,7 +28,6 @@ enum ApplicationNotificationCenter: NotificationCenterProtocol {
     var name: Notification.Name {
         switch self {
         case .dataDidChange:
-//            return Notification.Name("ApplicationNotificationCenter.modifyCoreData")
             return Notification.Name.NSManagedObjectContextObjectsDidChange
         }
     }

@@ -16,8 +16,6 @@ class CoreDataManager {
     lazy var context = appDelegate?.persistentContainer.viewContext
     let modelName: String = "RepoModel"
     
-    @Property var modifiedData = Set<Repository>()
-    
     func fetchRepos(ascending: Bool = false) -> Observable<Result<[RepoModel], CoreDataError>> {
         Observable.create { [weak self] emitter in
             guard let `self` = self else {
@@ -48,6 +46,12 @@ class CoreDataManager {
                 return Disposables.create()
             }
             
+            let fetchRequest = `self`.filteredRequest(key: repo.urlString)
+            if let results = try? `self`.context?.fetch(fetchRequest) as? [RepoModel],
+               results.count == 1 {
+                return Disposables.create()
+            }
+            
             if let context = `self`.context,
                let entity = NSEntityDescription.entity(forEntityName: `self`.modelName, in: context) {
                 
@@ -61,8 +65,6 @@ class CoreDataManager {
                         switch result {
                         case .success:
                             emitter.onNext(.success(()))
-//                            `self`.addRepoInDict(key: repo.urlString, state: true)
-                            `self`.addRepoInDict(repo: repo)
                         case .failure(let error):
                             emitter.onNext(.failure(error))
                         }
@@ -86,8 +88,6 @@ class CoreDataManager {
                     if results.count != 0 {
                         `self`.context?.delete(results[0])
                         emitter.onNext(.success(()))
-//                        `self`.addRepoInDict(key: urlString, state: true)
-                        `self`.addRepoInDict(repo: repo)
                     }
                 }
             } catch {
@@ -113,39 +113,5 @@ extension CoreDataManager {
         } catch {
             completion(.failure(.saveError(error)))
         }
-    }
-}
-
-extension CoreDataManager {
-    func addRepoInDict(repo: Repository) {
-        let newRepo = toggleIsStore(repo: repo)
-        modifiedData.insert(newRepo)
-    }
-    
-    func resetDict() {
-        modifiedData.removeAll()
-    }
-    
-    func toggleIsStore(repo: Repository) -> Repository {
-        let isStore = !repo.isStore
-        return Repository(name: repo.name,
-                          description: repo.description,
-                          starCount: repo.starCount,
-                          urlString: repo.urlString,
-                          isStore: isStore)
-    }
-    
-    func modifyDataInOrigin(modifiyData: [Repository],
-                            originData: [Repository]) -> [Repository] {
-        var repoList = originData
-        for modified in modifiedData {
-            for (index, origin) in originData.enumerated() {
-                if origin.urlString == modified.urlString {
-                    repoList[index].isStore = modified.isStore
-                    break
-                }
-            }
-        }
-        return repoList
     }
 }
