@@ -96,7 +96,7 @@ class StarButton: UIView {
 extension StarButton {
     func buttonAction(buttonState: Bool, repository: Repository, delegate: UIViewController , disposeBag: DisposeBag) {
         if buttonState {
-            CoreDataManager.shared.deleteRepo(key: repository.urlString)
+            CoreDataManager.shared.deleteRepo(repo: repository)
                 .subscribe(with: self, onNext: { (owner, result) in
                     switch result {
                     case .success:

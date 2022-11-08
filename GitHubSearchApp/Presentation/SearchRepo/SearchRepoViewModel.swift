@@ -18,6 +18,8 @@ enum ViewState {
 class SearchRepoViewModel {
     let apiRepoUseCase: APIRepoUseCase
     
+    let disposeBag = DisposeBag()
+    var localData = [Repository]()
     var searchText: String = ""
     var currentPage: Int = 1
     var viewState: ViewState = .idle {
@@ -127,7 +129,7 @@ extension SearchRepoViewModel: ViewModelType {
         
         let dataChangeObservable = CoreDataManager.shared.$modifiedData
         input.viewWillAppear.withLatestFrom(dataChangeObservable)
-            .map { modifiedData -> ([String : Bool], [MySection]) in
+            .map { modifiedData -> (Set<Repository>, [MySection]) in
                 return (modifiedData, output.repoList)
             }
             .withUnretained(self)
@@ -135,48 +137,63 @@ extension SearchRepoViewModel: ViewModelType {
                 return owner.checkReloadData(modifiedData: tuple.0, mySection: tuple.1)
             }
             .map { (owner, tuple) -> [MySection] in
-                return owner.fillStar(modifiedData: tuple.0, mySection: tuple.1)
+                let originData = tuple.1.first!.items as [Repository]
+                let modifyData = Array(tuple.0)
+                let newData = CoreDataManager.shared.modifyDataInOrigin(modifiyData: modifyData, originData: originData)
+                var newMySection = tuple.1.first!
+                newMySection.items = newData
+                
+                CoreDataManager.shared.modifiedData.removeAll()
+                print("😋 SearchRepoViewModel : withLatestFrom!")
+                return [newMySection]
             }
             .bind(to: output.$repoList)
             .disposed(by: disposeBag)
         
         return output
     }
+}
+
+// CoreData
+extension SearchRepoViewModel {
+    func fetchLocalData(completion: @escaping (() -> ())) {
+        CoreDataManager.shared.fetchRepos()
+            .subscribe(with: self, onNext: { (owner, result) in
+                switch result {
+                case .success(let data):
+                    var repoList = [Repository]()
+                    data.forEach { repo in
+                        if let repo = repo.toDomain() {
+                            repoList.append(repo)
+                        }
+                    }
+                    owner.localData = repoList
+                    completion()
+                case .failure(let error):
+                    print(error.description)
+                    owner.localData = []
+                    completion()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
     
-    func checkReloadData(modifiedData: [String : Bool], mySection: [MySection]) -> Bool {
+    func checkReloadData(modifiedData: Set<Repository>, mySection: [MySection]) -> Bool {
         guard let originData = mySection.first?.items as? [Repository],
               !modifiedData.isEmpty
         else {
             return false
         }
         
-        for urlString in modifiedData.keys {
-            for repo in originData {
-                if urlString == repo.urlString {
+        for modified in modifiedData {
+            for origin in originData {
+                if modified.urlString == origin.urlString {
                     return true
                 }
             }
         }
         
         return false
-    }
-    
-    func fillStar(modifiedData: [String : Bool], mySection: [MySection]) -> [MySection] {
-        let originData = mySection.first!.items as [Repository]
-        var repoList = originData
-        for (urlString, isStore) in modifiedData {
-            for (index, repo) in originData.enumerated() {
-                if repo.urlString == urlString {
-                    repoList[index].isStore = isStore
-                    break
-                }
-            }
-        }
-        
-        var newMySection = mySection.first!
-        newMySection.items = repoList
-        CoreDataManager.shared.resetDict()
-        return [newMySection]
     }
 }
 

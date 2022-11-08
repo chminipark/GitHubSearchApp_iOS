@@ -56,7 +56,7 @@ extension FavoriteRepoViewModel: ViewModelType {
                 !modifiedData.isEmpty
             }
             .subscribe(onNext: { (owner, _) in
-                print("😘 withLatestFrom!")
+                print("😘 FavoriteRepoViewModel : withLatestFrom!")
                 owner.fetchRequest.onNext(())
                 CoreDataManager.shared.resetDict()
             })

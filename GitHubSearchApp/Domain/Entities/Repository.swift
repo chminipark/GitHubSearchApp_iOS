@@ -8,7 +8,7 @@
 import Foundation
 import Differentiator
 
-struct Repository: IdentifiableType, Equatable {
+struct Repository: IdentifiableType, Equatable, Hashable {
     let name: String
     let description: String
     let starCount: Int
