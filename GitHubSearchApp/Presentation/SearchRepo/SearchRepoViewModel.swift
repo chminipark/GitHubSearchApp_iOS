@@ -187,7 +187,8 @@ extension SearchRepoViewModel: ViewModelType {
             .map { (owner, _) -> [MySection] in
                 let localData = owner.localData
                 let fetchedData = owner.mySection.items as [Repository]
-                let newData = owner.checkResultInLocalData(localData: localData, fetchedData: fetchedData)
+                let newData = owner.checkResultInLocalData(localData: localData,
+                                                           fetchedData: fetchedData)
                 owner.mySection.items = newData
                 print("😈 SearchRepoViewModel : ViewWillAppear!")
                 return [owner.mySection]

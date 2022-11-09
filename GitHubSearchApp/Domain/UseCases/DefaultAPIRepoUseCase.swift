@@ -11,7 +11,8 @@ import RxSwift
 protocol APIRepoUseCase {
     func getSearchRepoList(searchText: String,
                            currentPage: Int,
-                           originData: [Repository]?) -> Observable<Result<[MySection], NetworkError>>
+                           originData: [Repository]?)
+    -> Observable<Result<[MySection], NetworkError>>
 }
 
 class DefaultAPIRepoUseCase: APIRepoUseCase {
@@ -23,8 +24,7 @@ class DefaultAPIRepoUseCase: APIRepoUseCase {
     let disposeBag = DisposeBag()
     
     init(apiRepoGateway: APIRepoGateWay,
-         coreDataRepoGateWay: CoreDataRepoGateway)
-    {
+         coreDataRepoGateWay: CoreDataRepoGateway) {
         self.apiRepoGateway = apiRepoGateway
         self.coreDataRepoGateWay = coreDataRepoGateWay
         
@@ -76,15 +76,18 @@ class DefaultAPIRepoUseCase: APIRepoUseCase {
     
     func getSearchRepoList(searchText: String,
                            currentPage: Int,
-                           originData: [Repository]?) -> Observable<Result<[MySection], NetworkError>> {
+                           originData: [Repository]?)
+    -> Observable<Result<[MySection], NetworkError>> {
         return apiRepoGateway
-            .fetchRepoList(with: SearchRepoRequestDTO(searchText: searchText, currentPage: currentPage))
+            .fetchRepoList(with: SearchRepoRequestDTO(searchText: searchText,
+                                                      currentPage: currentPage))
             .withUnretained(self)
             .map { (owner, result) -> Result<[MySection], NetworkError> in
                 switch result {
                 case .success(let dto):
                     let localData = owner.localData
-                    let newData = owner.checkResultInLocalData(localData: localData, fetchedData: dto.toDomain())
+                    let newData = owner.checkResultInLocalData(localData: localData,
+                                                               fetchedData: dto.toDomain())
                     owner.mySection.items = (originData ?? []) + newData
                     return .success([owner.mySection])
                 case .failure(let error):

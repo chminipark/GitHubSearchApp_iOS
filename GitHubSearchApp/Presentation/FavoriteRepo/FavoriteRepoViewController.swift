@@ -11,12 +11,6 @@ import RxCocoa
 import RxDataSources
 import SafariServices
 
-/*
- - [x] 기본 스타버튼 : fill
- - [x] 추가 삭제시 테이블뷰 리로드 x
- - [ ] 테이블뷰 당길때 리로드
- */
-
 class FavoriteRepoViewController: UIViewController {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
@@ -24,7 +18,8 @@ class FavoriteRepoViewController: UIViewController {
     
     let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(RepoTableViewCell.self, forCellReuseIdentifier: RepoTableViewCell.cellId)
+        tableView.register(RepoTableViewCell.self,
+                           forCellReuseIdentifier: RepoTableViewCell.cellId)
         tableView.separatorInset = .zero
         return tableView
     }()

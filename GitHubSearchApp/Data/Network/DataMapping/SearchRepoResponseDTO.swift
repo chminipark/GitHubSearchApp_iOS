@@ -19,7 +19,8 @@ struct SearchRepoResponseDTO: Decodable {
     init(from decoder: Decoder) throws {
         let value = try decoder.container(keyedBy: CodingKeys.self)
         totalCount = (try? value.decode(Int.self, forKey: .totalCount)) ?? 0
-        repositoryDTOList = (try? value.decode([RepositoryDTO].self, forKey: .repositoryDTOList)) ?? []
+        repositoryDTOList = (try? value.decode([RepositoryDTO].self,
+                                               forKey: .repositoryDTOList)) ?? []
     }
 }
 

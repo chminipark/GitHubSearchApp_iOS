@@ -9,7 +9,8 @@ import Foundation
 import RxSwift
 
 protocol Provider {
-    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Observable<Result<R, NetworkError>> where E.Response == R
+    func request<E: RequestResponsable, R: Decodable>(endpoint: E)
+    -> Observable<Result<R, NetworkError>> where E.Response == R
 }
 
 class ProviderImpl: Provider {
@@ -20,7 +21,8 @@ class ProviderImpl: Provider {
         self.session = session
     }
     
-    func request<E: RequestResponsable, R: Decodable>(endpoint: E) -> Observable<Result<R, NetworkError>> where E.Response == R {
+    func request<E: RequestResponsable, R: Decodable>(endpoint: E)
+    -> Observable<Result<R, NetworkError>> where E.Response == R {
         return Observable.create { [weak self] emitter in
             guard let `self` = self else {
                 return Disposables.create()
@@ -52,7 +54,10 @@ class ProviderImpl: Provider {
         }
     }
     
-    func checkError(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+    func checkError(data: Data?,
+                    response: URLResponse?,
+                    error: Error?,
+                    completion: @escaping (Result<Data, NetworkError>) -> Void) {
         if let error = error {
             completion(.failure(NetworkError.responseError(error)))
             return

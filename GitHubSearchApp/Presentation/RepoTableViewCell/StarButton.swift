@@ -57,7 +57,10 @@ class StarButton: UIView {
             return
         }
 
-        buttonAction(buttonState: isTap, repository: repository, delegate: delegate, disposeBag: disposeBag)
+        buttonAction(buttonState: isTap,
+                     repository: repository,
+                     delegate: delegate,
+                     disposeBag: disposeBag)
     }
     
     required init?(coder: NSCoder) {
@@ -94,7 +97,10 @@ class StarButton: UIView {
 }
 
 extension StarButton {
-    func buttonAction(buttonState: Bool, repository: Repository, delegate: UIViewController , disposeBag: DisposeBag) {
+    func buttonAction(buttonState: Bool,
+                      repository: Repository,
+                      delegate: UIViewController,
+                      disposeBag: DisposeBag) {
         if buttonState {
             CoreDataManager.shared.deleteRepo(repo: repository)
                 .subscribe(with: self, onNext: { (owner, result) in
@@ -123,7 +129,9 @@ extension StarButton {
     }
     
     func showSaveAlert(delegate self: UIViewController) {
-        let alertController = UIAlertController(title: "즐겨찾기 추가!", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "즐겨찾기 추가!",
+                                                message: nil,
+                                                preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default)
         alertController.addAction(action)
         DispatchQueue.main.async {
@@ -132,7 +140,9 @@ extension StarButton {
     }
     
     func showDeleteAlert(delegate self: UIViewController) {
-        let alertController = UIAlertController(title: "즐겨찾기 삭제!", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "즐겨찾기 삭제!",
+                                                message: nil,
+                                                preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default)
         alertController.addAction(action)
         DispatchQueue.main.async {

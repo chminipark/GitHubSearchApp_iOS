@@ -11,15 +11,6 @@ import RxCocoa
 import RxDataSources
 import SafariServices
 
-/*
- 즐겨찾기탭에서 저장, 삭제할때마다 starButton fill 연동
- 
- 1.
- 즐겨찾기단에서 Noti로 저장 삭제할때마다 repo 담아서 post
- 
- repository uuid = urlString으로 모두 바꾸기
- */
-
 final class SearchRepoViewController: UIViewController {
     let disposeBag = DisposeBag()
     var dataSource: RxTableViewSectionedReloadDataSource<MySection>!
@@ -34,7 +25,8 @@ final class SearchRepoViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(RepoTableViewCell.self, forCellReuseIdentifier: RepoTableViewCell.cellId)
+        tableView.register(RepoTableViewCell.self,
+                           forCellReuseIdentifier: RepoTableViewCell.cellId)
         tableView.separatorInset = .zero
         return tableView
     }()
