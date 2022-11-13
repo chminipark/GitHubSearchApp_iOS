@@ -21,34 +21,36 @@ class GitHubSearchAppTests: XCTestCase {
 
     func test_ProviderRequestWithSearchRepo_Success() {
         // given
-        let endpoint = APIEndpoints.searchRepo(with: SearchRepoRequestDTO(q: ""))
+        let endpoint = APIEndpoints.searchRepo(with: SearchRepoRequestDTO(searchText: "", currentPage: 1))
         let observable = sut.request(endpoint: endpoint)
 
         // when
-        let data = try! observable.toBlocking().first()
+        let result = try! observable.toBlocking().first()
 
         // then
-        XCTAssertEqual(data?.totalCount, 40)
+        switch result {
+        case .success(let data):
+            XCTAssertEqual(data.totalCount, 40)
+        default:
+            XCTFail()
+        }
     }
     
     func test_ProviderRequestWithSearchRepo_Fail() {
         // given
         self.sut = ProviderImpl(session: MockURLSession(isFail: true))
-        let endpoint = APIEndpoints.searchRepo(with: SearchRepoRequestDTO(q: ""))
+        let endpoint = APIEndpoints.searchRepo(with: SearchRepoRequestDTO(searchText: "", currentPage: 1))
         let observable = sut.request(endpoint: endpoint)
-        let expectation = XCTestExpectation()
-
-        // when, then
-        observable.subscribe(onSuccess: { data in
-            XCTFail("it's fail Test, should be Fail")
-        }, onFailure: { error in
-            if let error = error as? NetworkError {
-                XCTAssertEqual(error.description, "😡😡😡😡😡" + "statusCodeError : 500")
-                expectation.fulfill()
-            }
-        })
-        .disposed(by: disposeBag)
         
-        wait(for: [expectation], timeout: 5)
+        // when
+        let result = try! observable.toBlocking().first()
+        
+        // then
+        switch result {
+        case .failure(let error):
+            XCTAssertEqual(error.description, "😡😡😡😡😡" + "statusCodeError : 500")
+        default:
+            XCTFail()
+        }
     }
 }
