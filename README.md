@@ -18,6 +18,9 @@ GitHub API를 활용한 깃헙 레포 검색 앱
 - 즐겨찾기 뷰
     - 즐겨찾기 목록 관리
 
+# Preview
+![GitHubSearchAppgif](https://user-images.githubusercontent.com/77793412/201511799-21c0a681-9e9f-40b0-b3e6-2e5855c8df95.gif)
+
 # Library
 > RxSwift, RxCocoa, RxDataSource, RxBlocking
 
