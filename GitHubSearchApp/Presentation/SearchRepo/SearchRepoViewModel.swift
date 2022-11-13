@@ -241,7 +241,7 @@ extension SearchRepoViewModel {
             return false
         }
         
-        return false
+        return true
     }
     
     func finishFetching() {
