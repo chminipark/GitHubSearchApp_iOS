@@ -7,7 +7,6 @@ GitHub API를 활용한 깃헙 레포 검색 앱
 - 코드 베이스 UI
 - CoreData 프레임워크를 사용하여 즐겨찾기 목록 유지
 - Pagination 구현
-- Unit Test
 
 # Feature
 - 레포 검색 뷰
@@ -20,7 +19,7 @@ GitHub API를 활용한 깃헙 레포 검색 앱
     - 즐겨찾기 목록 관리
 
 # Library
-> RxSwift, RxCocoa
+> RxSwift, RxCocoa, RxDataSource, RxBlocking
 
 # Rules
 - [Swift Style Guide](https://github.com/StyleShare/swift-style-guide)
@@ -30,5 +29,7 @@ GitHub API를 활용한 깃헙 레포 검색 앱
     - 되도록 두줄
 
 # Issue
-- 
+- [PropertyWrapper](https://github.com/chminipark/GitHubSearchApp_iOS/pull/14)
+- [Clean Architecture에 맞게 코드 분리](https://github.com/chminipark/GitHubSearchApp_iOS/pull/15)
+- [Pagination](https://github.com/chminipark/GitHubSearchApp_iOS/pull/22)
 
