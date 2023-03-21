@@ -9,8 +9,8 @@ import Foundation
 import RxSwift
 
 extension Reactive where Base: UIViewController {
-    public var viewWillAppear: Observable<Bool> {
-        return methodInvoked(#selector(Base.viewWillAppear))
-            .map { $0.first as? Bool ?? false }
-    }
+  public var viewWillAppear: Observable<Bool> {
+    return methodInvoked(#selector(Base.viewWillAppear))
+      .map { $0.first as? Bool ?? false }
+  }
 }

@@ -9,19 +9,19 @@ import Foundation
 import RxDataSources
 
 struct MySection {
-    var headerTitle: String
-    var items: [Item]
+  var headerTitle: String
+  var items: [Item]
 }
 
 extension MySection: AnimatableSectionModelType {
-    typealias Item = Repository
-    
-    var identity: String {
-        return headerTitle
-    }
-    
-    init(original: Self, items: [Item]) {
-        self = original
-        self.items = items
-    }
+  typealias Item = Repository
+  
+  var identity: String {
+    return headerTitle
+  }
+  
+  init(original: Self, items: [Item]) {
+    self = original
+    self.items = items
+  }
 }

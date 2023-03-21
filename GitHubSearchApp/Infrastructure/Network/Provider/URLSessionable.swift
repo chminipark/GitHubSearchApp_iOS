@@ -8,9 +8,9 @@
 import Foundation
 
 protocol URLSessionable {
-    func dataTask(with request: URLRequest,
-                  completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void)
-    -> URLSessionDataTask
+  func dataTask(with request: URLRequest,
+                completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void)
+  -> URLSessionDataTask
 }
 
 extension URLSession: URLSessionable {}

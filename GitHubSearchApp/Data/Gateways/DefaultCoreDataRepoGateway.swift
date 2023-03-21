@@ -9,11 +9,11 @@ import Foundation
 import RxSwift
 
 protocol CoreDataRepoGateway {
-    func fetchRepoList() -> Observable<Result<[RepoModel], CoreDataError>>
+  func fetchRepoList() -> Observable<Result<[RepoModel], CoreDataError>>
 }
 
 struct DefaultCoreDataRepoGateway: CoreDataRepoGateway {
-    func fetchRepoList() -> Observable<Result<[RepoModel], CoreDataError>> {
-        return CoreDataManager.shared.fetchRepos()
-    }
+  func fetchRepoList() -> Observable<Result<[RepoModel], CoreDataError>> {
+    return CoreDataManager.shared.fetchRepos()
+  }
 }

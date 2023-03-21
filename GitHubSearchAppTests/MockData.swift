@@ -8,7 +8,7 @@
 import Foundation
 
 enum MockData {
-    static let searchRepoResponseDTO: Data = """
+  static let searchRepoResponseDTO: Data = """
     {
       "total_count": 40,
       "incomplete_results": false,
